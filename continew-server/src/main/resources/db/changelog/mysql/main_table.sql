@@ -368,3 +368,138 @@ CREATE TABLE IF NOT EXISTS `sys_sms_log`  (
     INDEX `idx_config_id`(`config_id`),
     INDEX `idx_create_user`(`create_user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='短信日志表';
+
+-- changeset weilai:1
+-- comment 初始项目表结构
+
+DROP TABLE IF EXISTS `cc_angry_pig`;
+CREATE TABLE `cc_angry_pig`  (
+                                 `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键',
+                                 `user_id` bigint NOT NULL COMMENT '用户id',
+                                 `cause` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '原因',
+                                 `create_time` datetime NOT NULL COMMENT '创建时间',
+                                 `update_user` datetime NULL DEFAULT NULL COMMENT '更新人',
+                                 `create_user` bigint NOT NULL COMMENT '创建人',
+                                 `type` tinyint NOT NULL COMMENT '事件类型',
+                                 `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+                                 PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+DROP TABLE IF EXISTS `cc_blog`;
+CREATE TABLE `cc_blog`  (
+                            `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
+                            `title` varchar(128) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '标题',
+                            `picture` varchar(128) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '图片',
+                            `content` longtext CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '内容',
+                            `is_valid` int NOT NULL COMMENT '是否有效',
+                            `version` int NOT NULL DEFAULT 0 COMMENT '版本',
+                            `visit` int NOT NULL DEFAULT 0 COMMENT '流量数量',
+                            `simple_title` varchar(128) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '简化标题',
+                            `user_id` bigint NOT NULL COMMENT '用户id',
+                            `state` tinyint NOT NULL COMMENT '0保存 1发布',
+                            `create_time` datetime NOT NULL COMMENT '创建时间',
+                            `create_user` bigint NOT NULL COMMENT '创建人',
+                            `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+                            `update_user` bigint NULL DEFAULT NULL COMMENT '更新人',
+                            PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci ROW_FORMAT = DYNAMIC;
+
+DROP TABLE IF EXISTS `cc_blog_like`;
+CREATE TABLE `cc_blog_like`  (
+                                 `id` bigint NOT NULL AUTO_INCREMENT COMMENT '组件',
+                                 `user_id` bigint NOT NULL COMMENT '用户id',
+                                 `blog_id` bigint NOT NULL COMMENT '点赞博客id',
+                                 `create_time` datetime NOT NULL COMMENT '点赞时间',
+                                 PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+DROP TABLE IF EXISTS `cc_blog_type`;
+CREATE TABLE `cc_blog_type`  (
+                                 `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键',
+                                 `blog_id` bigint NOT NULL COMMENT '博客id',
+                                 `tag_id` bigint NOT NULL COMMENT '标签id',
+                                 `create_time` datetime NOT NULL COMMENT '创建时间',
+                                 `create_user` bigint NOT NULL COMMENT '创建人',
+                                 `update_user` bigint NULL DEFAULT NULL COMMENT '更新人',
+                                 `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+                                 PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+DROP TABLE IF EXISTS `cc_feedback`;
+CREATE TABLE `cc_feedback`  (
+                                `id` int NOT NULL AUTO_INCREMENT COMMENT 'id',
+                                `nickname` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '昵称',
+                                `avator` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '头像',
+                                `message` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL COMMENT '消息',
+                                `create_time` datetime NOT NULL COMMENT '创建时间',
+                                PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci ROW_FORMAT = DYNAMIC;
+
+DROP TABLE IF EXISTS `cc_friendlink`;
+CREATE TABLE `cc_friendlink`  (
+                                  `id` int NOT NULL AUTO_INCREMENT COMMENT '主键',
+                                  `web_url` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '网站链接',
+                                  `web_name` varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '网站名字',
+                                  `web_descript` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL COMMENT '网站描述',
+                                  `web_time` date NULL DEFAULT NULL COMMENT '添加时间',
+                                  `web_img` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '网站图片',
+                                  `web_access` int NOT NULL COMMENT '0为为审核通过 1为审核通过',
+                                  `web_email` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '用户邮箱',
+                                  `create_time` datetime NOT NULL COMMENT '创建时间',
+                                  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+                                  `create_user` bigint NOT NULL COMMENT '创建人',
+                                  `update_user` bigint NULL DEFAULT NULL COMMENT '更新人',
+                                  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci ROW_FORMAT = DYNAMIC;
+
+DROP TABLE IF EXISTS `cc_life_note`;
+CREATE TABLE `cc_life_note`  (
+                                 `id` bigint NOT NULL COMMENT '主键',
+                                 `origin_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '原图地址',
+                                 `web_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '网页压缩图地址',
+                                 `user_id` bigint NOT NULL COMMENT '发布者id',
+                                 `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '描述',
+                                 `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '标题',
+                                 `create_time` datetime NOT NULL COMMENT '创建时间',
+                                 `create_user` bigint NOT NULL COMMENT '创建人',
+                                 `update_user` bigint NULL DEFAULT NULL COMMENT '更新人',
+                                 `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+                                 PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+DROP TABLE IF EXISTS `cc_module`;
+CREATE TABLE `cc_module`  (
+                              `id` int NOT NULL AUTO_INCREMENT COMMENT 'id',
+                              `module_name` varchar(128) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '模块名字',
+                              `module_status` tinyint NULL DEFAULT NULL COMMENT '0表示没有开发的 ，  1 表示开发完成的',
+                              `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+                              `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+                              `create_user` bigint NOT NULL COMMENT '创建人',
+                              `update_user` bigint NULL DEFAULT NULL COMMENT '更新人',
+                              PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci ROW_FORMAT = DYNAMIC;
+
+DROP TABLE IF EXISTS `cc_review`;
+CREATE TABLE `cc_review`  (
+                              `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键',
+                              `content` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL COMMENT '评论内容',
+                              `likes` int NULL DEFAULT NULL COMMENT '点赞数',
+                              `blog_id` bigint NULL DEFAULT NULL COMMENT '博客id',
+                              `reply_id` bigint NULL DEFAULT NULL COMMENT '回复的是哪个评论的id',
+                              `user_id` bigint NULL DEFAULT NULL COMMENT '评论用户id',
+                              `review_type` tinyint NOT NULL COMMENT '评论的类型 0是主评论1是子评论',
+                              `reply_user_id` bigint NULL DEFAULT NULL COMMENT '回复的用户id',
+                              `create_time` datetime NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '评论时间',
+                              PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci ROW_FORMAT = DYNAMIC;
+
+DROP TABLE IF EXISTS `cc_tag`;
+CREATE TABLE `cc_tag`  (
+                           `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键',
+                           `name` varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '标签名称',
+                           `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+                           `update_time` datetime NULL DEFAULT NULL COMMENT '修改时间',
+                           PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci ROW_FORMAT = DYNAMIC;
+
+
