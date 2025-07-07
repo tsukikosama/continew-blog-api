@@ -1,0 +1,71 @@
+package top.continew.admin.blog.model.req;
+
+import jakarta.validation.constraints.*;
+
+import lombok.Data;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+
+import org.hibernate.validator.constraints.Length;
+import java.io.Serial;
+import java.io.Serializable;
+import java.time.*;
+
+/**
+ * 博客 创建或修改参数
+ *
+ * @author weilai
+ * @since 2025/07/07 17:36
+ */
+@Data
+@Schema(description = "博客 创建或修改参数")
+public class BlogReq implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * 标题
+     */
+    @Schema(description = "标题")
+    @NotBlank(message = "标题不能为空")
+    @Length(max = 128, message = "标题长度不能超过 {max} 个字符")
+    private String title;
+
+    /**
+     * 图片
+     */
+    @Schema(description = "图片")
+    @Length(max = 128, message = "图片长度不能超过 {max} 个字符")
+    private String picture;
+
+    /**
+     * 内容
+     */
+    @Schema(description = "内容")
+    @NotBlank(message = "内容不能为空")
+    @Length(max = 2147483647, message = "内容长度不能超过 {max} 个字符")
+    private String content;
+
+    /**
+     * 是否有效
+     */
+    @Schema(description = "是否有效")
+    @NotNull(message = "是否有效不能为空")
+    private Integer isValid;
+
+    /**
+     * 简化标题
+     */
+    @Schema(description = "简化标题")
+    @NotBlank(message = "简化标题不能为空")
+    @Length(max = 128, message = "简化标题长度不能超过 {max} 个字符")
+    private String simpleTitle;
+
+    /**
+     * 0保存 1发布
+     */
+    @Schema(description = "0保存 1发布")
+    @NotNull(message = "0保存 1发布不能为空")
+    private Integer state;
+}
