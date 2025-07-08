@@ -22,5 +22,7 @@ import top.continew.admin.blog.service.BlogService;
  */
 @Tag(name = "博客 管理 API")
 @RestController
-@CrudRequestMapping(value = "/blog/blog", api = {Api.PAGE, Api.GET, Api.CREATE, Api.UPDATE, Api.DELETE, Api.EXPORT})
-public class BlogController extends BaseController<BlogService, BlogResp, BlogDetailResp, BlogQuery, BlogReq> {}
+@CrudRequestMapping(value = "/admin/blog", api = {Api.PAGE, Api.GET, Api.CREATE, Api.UPDATE, Api.DELETE, Api.EXPORT})
+public class BlogController extends BaseController<BlogService, BlogResp, BlogDetailResp, BlogQuery, BlogReq> {
+
+}

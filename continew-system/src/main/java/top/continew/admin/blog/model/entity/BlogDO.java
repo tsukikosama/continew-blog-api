@@ -37,15 +37,7 @@ public class BlogDO extends BaseDO {
      */
     private String content;
 
-    /**
-     * 是否有效
-     */
-    private Integer isValid;
 
-    /**
-     * 版本
-     */
-    private Integer version;
 
     /**
      * 流量数量
@@ -65,5 +57,5 @@ public class BlogDO extends BaseDO {
     /**
      * 0保存 1发布
      */
-    private Integer state;
+    private Integer status;
 }

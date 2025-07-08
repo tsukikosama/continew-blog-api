@@ -1,5 +1,6 @@
 package top.continew.admin.blog.service.impl;
 
+import cn.dev33.satoken.stp.StpUtil;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
@@ -21,4 +22,11 @@ import top.continew.admin.blog.service.BlogService;
  */
 @Service
 @RequiredArgsConstructor
-public class BlogServiceImpl extends BaseServiceImpl<BlogMapper, BlogDO, BlogResp, BlogDetailResp, BlogQuery, BlogReq> implements BlogService {}
+public class BlogServiceImpl extends BaseServiceImpl<BlogMapper, BlogDO, BlogResp, BlogDetailResp, BlogQuery, BlogReq> implements BlogService {
+    @Override
+    public Long create(BlogReq req) {
+        System.out.println(req);
+        req.setUserId(StpUtil.getLoginIdAsLong());
+        return super.create(req);
+    }
+}

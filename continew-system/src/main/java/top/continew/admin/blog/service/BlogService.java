@@ -12,4 +12,7 @@ import top.continew.admin.blog.model.resp.BlogResp;
  * @author weilai
  * @since 2025/07/07 17:36
  */
-public interface BlogService extends BaseService<BlogResp, BlogDetailResp, BlogQuery, BlogReq> {}
+public interface BlogService extends BaseService<BlogResp, BlogDetailResp, BlogQuery, BlogReq> {
+
+
+}

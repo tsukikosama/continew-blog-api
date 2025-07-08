@@ -11,46 +11,38 @@ import java.io.Serializable;
 import java.time.*;
 
 /**
- * 博客 查询条件
+ * 分类查询条件
  *
  * @author weilai
- * @since 2025/07/07 17:36
+ * @since 2025/07/07 18:25
  */
 @Data
-@Schema(description = "博客 查询条件")
-public class BlogQuery implements Serializable {
+@Schema(description = "分类查询条件")
+public class BlogTypeQuery implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
     /**
-     * 标题
+     * 博客id
      */
-    @Schema(description = "标题")
-    @Query(type = QueryType.LIKE)
-    private String title;
-
-
-    /**
-     * 简化标题
-     */
-    @Schema(description = "简化标题")
-    @Query(type = QueryType.LIKE)
-    private String simpleTitle;
-
-    /**
-     * 0保存 1发布
-     */
-    @Schema(description = "0保存 1发布")
+    @Schema(description = "博客id")
     @Query(type = QueryType.EQ)
-    private Integer status;
+    private Long blogId;
+
+    /**
+     * 标签id
+     */
+    @Schema(description = "标签id")
+    @Query(type = QueryType.EQ)
+    private Long tagId;
 
     /**
      * 创建时间
      */
     @Schema(description = "创建时间")
-    @Query(type = QueryType.BETWEEN)
-    private LocalDateTime[] createTime;
+    @Query(type = QueryType.EQ)
+    private LocalDateTime createTime;
 
     /**
      * 创建人

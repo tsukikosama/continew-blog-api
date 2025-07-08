@@ -11,46 +11,45 @@ import java.io.Serializable;
 import java.time.*;
 
 /**
- * 博客 查询条件
+ * 友链查询条件
  *
  * @author weilai
- * @since 2025/07/07 17:36
+ * @since 2025/07/08 14:00
  */
 @Data
-@Schema(description = "博客 查询条件")
-public class BlogQuery implements Serializable {
+@Schema(description = "友链查询条件")
+public class FriendlinkQuery implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
     /**
-     * 标题
+     * 网站名字
      */
-    @Schema(description = "标题")
-    @Query(type = QueryType.LIKE)
-    private String title;
-
-
-    /**
-     * 简化标题
-     */
-    @Schema(description = "简化标题")
-    @Query(type = QueryType.LIKE)
-    private String simpleTitle;
-
-    /**
-     * 0保存 1发布
-     */
-    @Schema(description = "0保存 1发布")
+    @Schema(description = "网站名字")
     @Query(type = QueryType.EQ)
-    private Integer status;
+    private String webName;
+
+    /**
+     * 0为为审核通过 1为审核通过
+     */
+    @Schema(description = "0为为审核通过 1为审核通过")
+    @Query(type = QueryType.EQ)
+    private Integer webAccess;
+
+    /**
+     * 用户邮箱
+     */
+    @Schema(description = "用户邮箱")
+    @Query(type = QueryType.EQ)
+    private String webEmail;
 
     /**
      * 创建时间
      */
     @Schema(description = "创建时间")
-    @Query(type = QueryType.BETWEEN)
-    private LocalDateTime[] createTime;
+    @Query(type = QueryType.EQ)
+    private LocalDateTime createTime;
 
     /**
      * 创建人

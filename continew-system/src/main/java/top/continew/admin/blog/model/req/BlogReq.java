@@ -47,12 +47,8 @@ public class BlogReq implements Serializable {
     @Length(max = 2147483647, message = "内容长度不能超过 {max} 个字符")
     private String content;
 
-    /**
-     * 是否有效
-     */
-    @Schema(description = "是否有效")
-    @NotNull(message = "是否有效不能为空")
-    private Integer isValid;
+
+
 
     /**
      * 简化标题
@@ -67,5 +63,11 @@ public class BlogReq implements Serializable {
      */
     @Schema(description = "0保存 1发布")
     @NotNull(message = "0保存 1发布不能为空")
-    private Integer state;
+    private Integer status;
+
+    /**
+     * 作者
+     */
+    @Schema(description = "作者")
+    private Long userId;
 }

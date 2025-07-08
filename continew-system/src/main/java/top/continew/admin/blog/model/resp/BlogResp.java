@@ -40,12 +40,6 @@ public class BlogResp extends BaseResp {
     private String content;
 
     /**
-     * 是否有效
-     */
-    @Schema(description = "是否有效")
-    private Integer isValid;
-
-    /**
      * 流量数量
      */
     @Schema(description = "流量数量")
@@ -67,7 +61,7 @@ public class BlogResp extends BaseResp {
      * 0保存 1发布
      */
     @Schema(description = "0保存 1发布")
-    private Integer state;
+    private Integer status;
 
     /**
      * 更新时间
@@ -80,4 +74,6 @@ public class BlogResp extends BaseResp {
      */
     @Schema(description = "更新人")
     private Long updateUser;
+
+
 }

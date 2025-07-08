@@ -46,19 +46,7 @@ public class BlogDetailResp extends BaseDetailResp {
     @ExcelProperty(value = "内容")
     private String content;
 
-    /**
-     * 是否有效
-     */
-    @Schema(description = "是否有效")
-    @ExcelProperty(value = "是否有效")
-    private Integer isValid;
 
-    /**
-     * 版本
-     */
-    @Schema(description = "版本")
-    @ExcelProperty(value = "版本")
-    private Integer version;
 
     /**
      * 流量数量
@@ -86,5 +74,5 @@ public class BlogDetailResp extends BaseDetailResp {
      */
     @Schema(description = "0保存 1发布")
     @ExcelProperty(value = "0保存 1发布")
-    private Integer state;
+    private Integer status;
 }

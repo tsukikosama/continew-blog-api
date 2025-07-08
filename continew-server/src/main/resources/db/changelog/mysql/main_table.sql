@@ -503,3 +503,22 @@ CREATE TABLE `cc_tag`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci ROW_FORMAT = DYNAMIC;
 
 
+-- changeset weilai:2
+-- comment 标签表新增创建人和更新人
+ALTER TABLE `cc_tag`
+    MODIFY COLUMN `create_time` datetime NOT NULL COMMENT '创建时间' AFTER `name`,
+    ADD COLUMN `create_user` bigint NOT NULL COMMENT '创建人' AFTER `update_time`,
+    ADD COLUMN `update_user` bigint NULL COMMENT '更新人' AFTER `create_user`;
+
+-- changeset weilai:3
+-- comment 修改博客表字段名
+ALTER TABLE `cc_blog`
+    CHANGE COLUMN `state` `status` tinyint NOT NULL COMMENT '0保存 1发布' AFTER `user_id`;
+ALTER TABLE `cc_blog`
+    MODIFY COLUMN `is_valid` int NULL COMMENT '是否有效' AFTER `content`;
+
+-- changeset weilai:4
+-- comment 移除无用字段
+ALTER TABLE `cc_blog`
+    DROP COLUMN `is_valid`,
+    DROP COLUMN `version`;

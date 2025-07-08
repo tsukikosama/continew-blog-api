@@ -124,4 +124,11 @@ public class CommonController {
                 .getDefaultValue())))
             .toList();
     }
+
+    @Operation(summary = "查询标签字典", description = "查询标签字典")
+    @GetMapping("/dict/tag")
+    public List<LabelValueResp> listTagDict(@PathVariable String code) {
+        return dictItemService.listByDictCode(code);
+    }
+
 }
