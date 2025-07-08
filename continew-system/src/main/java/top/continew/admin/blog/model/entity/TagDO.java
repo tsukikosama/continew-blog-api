@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 
 import top.continew.admin.common.config.excel.DictExcelProperty;
 import top.continew.admin.common.model.entity.BaseDO;
+import top.continew.starter.extension.crud.annotation.DictModel;
 
 
 import java.io.Serial;
@@ -18,6 +19,7 @@ import java.io.Serial;
  */
 @Data
 @TableName("cc_tag")
+@DictModel(labelKey = "name")
 public class TagDO extends BaseDO {
 
     @Serial
@@ -26,6 +28,5 @@ public class TagDO extends BaseDO {
     /**
      * 标签名称
      */
-    @DictExcelProperty("name")
     private String name;
 }

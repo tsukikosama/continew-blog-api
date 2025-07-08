@@ -30,6 +30,8 @@ import org.dromara.x.file.storage.core.FileInfo;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import top.continew.admin.blog.model.query.TagQuery;
+import top.continew.admin.blog.service.TagService;
 import top.continew.admin.common.constant.CacheConstants;
 import top.continew.admin.system.enums.OptionCategoryEnum;
 import top.continew.admin.system.model.query.*;
@@ -64,6 +66,7 @@ public class CommonController {
     private final RoleService roleService;
     private final DictItemService dictItemService;
     private final OptionService optionService;
+    private final TagService tagService;
 
     @Operation(summary = "上传文件", description = "上传文件")
     @Parameter(name = "parentPath", description = "上级目录", example = "/", in = ParameterIn.QUERY)
@@ -127,8 +130,8 @@ public class CommonController {
 
     @Operation(summary = "查询标签字典", description = "查询标签字典")
     @GetMapping("/dict/tag")
-    public List<LabelValueResp> listTagDict(@PathVariable String code) {
-        return dictItemService.listByDictCode(code);
+    public List<LabelValueResp> listTagDict(TagQuery query, SortQuery sortQuery) {
+        return tagService.listDict(query,sortQuery);
     }
 
 }
