@@ -10,6 +10,7 @@ import org.hibernate.validator.constraints.Length;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.*;
+import java.util.List;
 
 /**
  * 博客 创建或修改参数
@@ -70,4 +71,8 @@ public class BlogReq implements Serializable {
      */
     @Schema(description = "作者")
     private Long userId;
+
+    @Schema(description = "标签id")
+    @NotNull(message = "至少要有一个标签")
+    private List<Long> tagId;
 }

@@ -13,6 +13,8 @@ import top.continew.admin.blog.model.req.BlogReq;
 import top.continew.admin.blog.model.resp.BlogDetailResp;
 import top.continew.admin.blog.model.resp.BlogResp;
 import top.continew.admin.blog.service.BlogService;
+import top.continew.starter.extension.crud.model.query.PageQuery;
+import top.continew.starter.extension.crud.model.resp.BasePageResp;
 
 /**
  * 博客 管理 API
@@ -24,5 +26,8 @@ import top.continew.admin.blog.service.BlogService;
 @RestController
 @CrudRequestMapping(value = "/admin/blog", api = {Api.PAGE, Api.GET, Api.CREATE, Api.UPDATE, Api.DELETE, Api.EXPORT})
 public class BlogController extends BaseController<BlogService, BlogResp, BlogDetailResp, BlogQuery, BlogReq> {
-
+    @Override
+    public BasePageResp<BlogResp> page(BlogQuery query, PageQuery pageQuery) {
+        return super.page(query, pageQuery);
+    }
 }

@@ -323,3 +323,9 @@ INSERT INTO `sys_menu` (`id`, `title`, `parent_id`, `type`, `path`, `name`, `com
 INSERT INTO `sys_menu` (`id`, `title`, `parent_id`, `type`, `path`, `name`, `component`, `redirect`, `icon`, `is_external`, `is_cache`, `is_hidden`, `permission`, `sort`, `status`, `create_user`, `create_time`, `update_user`, `update_time`) VALUES (1942484693535940612, '修改', 1942484693535940608, 3, NULL, NULL, NULL, NULL, NULL, b'0', b'0', b'0', 'blog:tag:update', 4, 1, 1, '2025-07-08 15:25:23', NULL, NULL);
 INSERT INTO `sys_menu` (`id`, `title`, `parent_id`, `type`, `path`, `name`, `component`, `redirect`, `icon`, `is_external`, `is_cache`, `is_hidden`, `permission`, `sort`, `status`, `create_user`, `create_time`, `update_user`, `update_time`) VALUES (1942484693535940613, '删除', 1942484693535940608, 3, NULL, NULL, NULL, NULL, NULL, b'0', b'0', b'0', 'blog:tag:delete', 5, 1, 1, '2025-07-08 15:25:23', NULL, NULL);
 INSERT INTO `sys_menu` (`id`, `title`, `parent_id`, `type`, `path`, `name`, `component`, `redirect`, `icon`, `is_external`, `is_cache`, `is_hidden`, `permission`, `sort`, `status`, `create_user`, `create_time`, `update_user`, `update_time`) VALUES (1942484693535940614, '导出', 1942484693535940608, 3, NULL, NULL, NULL, NULL, NULL, b'0', b'0', b'0', 'blog:tag:export', 6, 1, 1, '2025-07-08 15:25:23', NULL, NULL);
+
+-- changeset weilai:3
+-- comment 修改表字段类型
+ALTER TABLE `cc_friendlink`
+    MODIFY COLUMN `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键' FIRST,
+    MODIFY COLUMN `web_access` int NOT NULL COMMENT '0为为审核通过 1为审核通过 2为审核失败' AFTER `web_img`;

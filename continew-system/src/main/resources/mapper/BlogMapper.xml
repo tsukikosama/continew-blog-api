@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="top.continew.admin.blog.mapper.BlogMapper">
+    <select id="selectBlogPage" resultType="top.continew.admin.blog.model.resp.ApiBlogResp">
+        select cb.*,count(cr.id) as reviewNum, count(cbl.id) as likeNumber ,cc.id as cusomerId, cc.nickname as userName from cc_blog cb
+            left join cc_review cr on cb.id = cr.blog_id
+            left join cc_blog_like cbl on cb.id = cbl.blog_id
+            left join cc_customer cc on cb.user_id = cc.id
+    </select>
 </mapper>

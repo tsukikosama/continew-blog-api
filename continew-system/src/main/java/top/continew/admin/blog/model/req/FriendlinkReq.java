@@ -54,12 +54,17 @@ public class FriendlinkReq implements Serializable {
     @Schema(description = "0为为审核通过 1为审核通过")
     @NotNull(message = "0为为审核通过 1为审核通过不能为空")
     private Integer webAccess;
-
+    /**
+     * 网站描述
+     */
+    @Schema(description = "网站描述")
+    private Integer webDescript;
     /**
      * 用户邮箱
      */
     @Schema(description = "用户邮箱")
     @NotBlank(message = "用户邮箱不能为空")
+    @Email
     @Length(max = 255, message = "用户邮箱长度不能超过 {max} 个字符")
     private String webEmail;
 
@@ -67,13 +72,13 @@ public class FriendlinkReq implements Serializable {
      * 创建时间
      */
     @Schema(description = "创建时间")
-    @NotNull(message = "创建时间不能为空")
+//    @NotNull(message = "创建时间不能为空")
     private LocalDateTime createTime;
 
     /**
      * 创建人
      */
     @Schema(description = "创建人")
-    @NotNull(message = "创建人不能为空")
+//    @NotNull(message = "创建人不能为空")
     private Long createUser;
 }

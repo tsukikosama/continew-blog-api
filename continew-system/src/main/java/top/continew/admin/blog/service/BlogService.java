@@ -1,5 +1,8 @@
 package top.continew.admin.blog.service;
 
+import top.continew.admin.blog.model.resp.ApiBlogResp;
+import top.continew.starter.extension.crud.model.query.PageQuery;
+import top.continew.starter.extension.crud.model.resp.BasePageResp;
 import top.continew.starter.extension.crud.service.BaseService;
 import top.continew.admin.blog.model.query.BlogQuery;
 import top.continew.admin.blog.model.req.BlogReq;
@@ -15,4 +18,5 @@ import top.continew.admin.blog.model.resp.BlogResp;
 public interface BlogService extends BaseService<BlogResp, BlogDetailResp, BlogQuery, BlogReq> {
 
 
+    BasePageResp<ApiBlogResp> blogPage(BlogQuery query, PageQuery pageQuery);
 }

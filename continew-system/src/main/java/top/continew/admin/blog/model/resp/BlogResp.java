@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import top.continew.admin.common.model.resp.BaseResp;
 import java.io.Serial;
 import java.time.*;
+import java.util.List;
 
 /**
  * 博客 信息
@@ -75,5 +76,6 @@ public class BlogResp extends BaseResp {
     @Schema(description = "更新人")
     private Long updateUser;
 
-
+    @Schema(description = "博客标签")
+    private List<Long> tagId;
 }
