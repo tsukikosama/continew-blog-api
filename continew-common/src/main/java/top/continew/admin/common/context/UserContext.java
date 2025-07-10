@@ -24,6 +24,8 @@ import top.continew.admin.common.constant.SysConstants;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -98,7 +100,14 @@ public class UserContext implements Serializable {
 
     public void setRoles(Set<RoleContext> roles) {
         this.roles = roles;
-        this.roleCodes = roles.stream().map(RoleContext::getCode).collect(Collectors.toSet());
+        if (roles != null) {
+            this.roleCodes = roles.stream()
+                    .filter(Objects::nonNull)
+                    .map(RoleContext::getCode)
+                    .collect(Collectors.toSet());
+        } else {
+            this.roleCodes = Collections.emptySet();
+        }
     }
 
     /**

@@ -1,5 +1,7 @@
 package top.continew.admin.blog.service;
 
+import jakarta.servlet.http.HttpServletRequest;
+import top.continew.admin.auth.model.req.LoginReq;
 import top.continew.admin.blog.model.req.CustomerLoginReq;
 import top.continew.starter.extension.crud.service.BaseService;
 import top.continew.admin.blog.model.query.CustomerQuery;

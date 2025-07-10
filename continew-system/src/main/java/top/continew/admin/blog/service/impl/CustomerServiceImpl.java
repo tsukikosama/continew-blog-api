@@ -88,32 +88,35 @@ public class CustomerServiceImpl extends BaseServiceImpl<CustomerMapper, Custome
         Long userId = customerDO.getId();
 
 
+        // 构建用户上下文
         UserContext userContext = new UserContext();
         Set<RoleContext> roles = new HashSet<>();
         Set<String> codes = new HashSet<>();
-
         codes.add("admin");
+
         RoleContext role = new RoleContext();
-        role.setId(1l);
+        role.setId(1L);
         role.setCode("admin");
         role.setDataScope(ALL);
         roles.add(role);
+
         userContext.setRoles(roles);
         userContext.setRoleCodes(codes);
-        userContext.setId(userId);
+        userContext.setId(customerDO.getId());
         BeanUtil.copyProperties(customerDO, userContext);
-        // 设置登录配置参数
-        SaLoginParameter loginParameter = new SaLoginParameter();
-        loginParameter.setActiveTimeout(client.getActiveTimeout());
-        loginParameter.setTimeout(client.getTimeout());
-        loginParameter.setDeviceType(client.getClientType());
         userContext.setClientType(client.getClientType());
-        loginParameter.setExtra("clientId", client.getClientId());
         userContext.setClientId(client.getClientId());
-        // 登录并缓存用户信息
-        StpUtil.login(userContext.getId(), loginParameter.setExtraData(BeanUtil
-                .beanToMap(new UserExtraContext(ServletUtils.getRequest()))));
-        UserContextHolder.setContext(userContext);
+
+// 构建 SaLoginModel
+        SaLoginModel model = new SaLoginModel();
+        model.setDevice(client.getClientType());
+        model.setTimeout(client.getTimeout());
+        model.setActiveTimeout(client.getActiveTimeout());
+        model.setExtra("USER", userContext); // ✅ 放进会话
+
+// 登录
+        StpUtil.login(customerDO.getId(), model);
+
 
         return "Bearer " + StpUtil.getTokenValue();
     }

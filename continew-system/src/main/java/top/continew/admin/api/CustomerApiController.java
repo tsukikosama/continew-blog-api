@@ -5,14 +5,18 @@ import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.bean.BeanUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import top.continew.admin.auth.model.req.LoginReq;
+import top.continew.admin.auth.service.AuthService;
 import top.continew.admin.blog.model.query.BlogQuery;
 import top.continew.admin.blog.model.req.CustomerLoginReq;
 import top.continew.admin.blog.model.req.CustomerReq;
 import top.continew.admin.blog.model.resp.ApiBlogResp;
 import top.continew.admin.blog.model.resp.ApiCustomerResp;
 import top.continew.admin.blog.model.resp.CustomerDetailResp;
+import top.continew.admin.blog.service.BlogService;
 import top.continew.admin.blog.service.CustomerService;
 import top.continew.starter.extension.crud.model.query.PageQuery;
 import top.continew.starter.extension.crud.model.resp.BasePageResp;
@@ -23,6 +27,8 @@ import top.continew.starter.extension.crud.model.resp.BasePageResp;
 @RequiredArgsConstructor
 public class CustomerApiController {
     private final CustomerService customerService;
+
+    private final BlogService blogService;
 
     @PostMapping("/register")
     @Operation(summary = "注册", description = "注册")
@@ -42,7 +48,14 @@ public class CustomerApiController {
     @Operation(summary = "获取用户信息", description = "获取用户信息")
     public ApiCustomerResp info(){
         CustomerDetailResp customerDetailResp = customerService.get(StpUtil.getLoginIdAsLong());
-        return BeanUtil.copyProperties(customerDetailResp, ApiCustomerResp.class);
+        ApiCustomerResp apiCustomerResp = BeanUtil.copyProperties(customerDetailResp, ApiCustomerResp.class);
+        ApiCustomerResp apiCustomerResp2 = blogService.getUserBlogDateById(StpUtil.getLoginIdAsLong());
+        apiCustomerResp.setMonthCount(apiCustomerResp2.getMonthCount());
+        apiCustomerResp.setBlogCount(apiCustomerResp2.getBlogCount());
+        apiCustomerResp.setWeekCount(apiCustomerResp2.getWeekCount());
+        return apiCustomerResp;
     }
+
+
 
 }

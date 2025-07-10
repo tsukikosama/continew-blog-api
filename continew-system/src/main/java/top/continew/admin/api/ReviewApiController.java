@@ -1,0 +1,56 @@
+package top.continew.admin.api;
+
+import cn.dev33.satoken.annotation.SaIgnore;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+import top.continew.admin.blog.model.query.ReviewQuery;
+import top.continew.admin.blog.model.req.ApiReviewReq;
+import top.continew.admin.blog.model.req.ReviewReq;
+import top.continew.admin.blog.model.resp.ReviewDetailResp;
+import top.continew.admin.blog.model.resp.ReviewResp;
+import top.continew.admin.blog.service.CustomerService;
+import top.continew.admin.blog.service.ReviewService;
+import top.continew.admin.common.controller.BaseController;
+import top.continew.starter.extension.crud.annotation.CrudRequestMapping;
+import top.continew.starter.extension.crud.enums.Api;
+import top.continew.starter.extension.crud.model.query.PageQuery;
+import top.continew.starter.extension.crud.model.resp.BasePageResp;
+
+import java.util.List;
+
+/**
+ * 评论管理 API
+ *
+ * @author weilai
+ * @since 2025/07/10 14:23
+ */
+@Tag(name = "评论API")
+@RestController
+@CrudRequestMapping(value = "/api/review", api = {Api.PAGE, Api.GET, Api.CREATE, Api.UPDATE, Api.DELETE, Api.EXPORT})
+@RequiredArgsConstructor
+public class ReviewApiController extends BaseController<ReviewService, ReviewResp, ReviewDetailResp, ReviewQuery, ReviewReq> {
+
+    private final CustomerService customerService;
+    @SaIgnore
+    @Override
+    public BasePageResp<ReviewResp> page(ReviewQuery query, PageQuery pageQuery) {
+        query.setReviewType(0);
+        BasePageResp<ReviewResp> page = super.page(query, pageQuery);
+        page.getList().forEach(item -> {
+            item.setUserAvatar(customerService.get(item.getUserId()).getAvatar());
+            List<ReviewResp> list = this.baseService.getChildReview(item.getId());
+            item.setChildren(list);
+        });
+        return page;
+    }
+
+    @PostMapping("/reply")
+    @Operation(summary = "评论", description = "评论")
+    public void review(@RequestBody ApiReviewReq req){
+        this.baseService.review(req);
+    }
+}

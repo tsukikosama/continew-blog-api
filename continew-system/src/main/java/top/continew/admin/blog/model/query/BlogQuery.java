@@ -58,4 +58,6 @@ public class BlogQuery implements Serializable {
     @Schema(description = "创建人")
     @Query(type = QueryType.EQ)
     private Long createUser;
+
+
 }

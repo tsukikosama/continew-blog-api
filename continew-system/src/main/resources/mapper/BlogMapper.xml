@@ -6,5 +6,34 @@
             left join cc_review cr on cb.id = cr.blog_id
             left join cc_blog_like cbl on cb.id = cbl.blog_id
             left join cc_customer cc on cb.user_id = cc.id
+        GROUP BY cb.id
+    </select>
+    <select id="getUserBlogDateById" resultType="top.continew.admin.blog.model.resp.ApiCustomerResp">
+        select count(cb.id) as blogCount,
+               ifnull(SUM(CASE WHEN YEARWEEK(DATE(cb.create_time), 1) = YEARWEEK(CURDATE(), 1) THEN 1 ELSE 0 END),0) AS weekCount,
+               ifnull(SUM(CASE WHEN YEAR(cb.create_time) = YEAR(CURDATE()) AND MONTH(cb.create_time) = MONTH(CURDATE()) AND cc.id IS NOT NULL THEN 1 ELSE 0 END),0) AS monthCount
+        from cc_blog cb
+            left join cc_customer cc on cb.user_id = cc.id
+        where cc.id = #{id}
+    </select>
+    <select id="getRecentBlog" resultType="top.continew.admin.blog.model.resp.ApiBlogResp">
+        select cb.*, count(cr.id) as reviewNum, count(cbl.id) as likeNumber, cc.id as cusomerId, cc.nickname as userName
+        from cc_blog cb
+                 left join cc_review cr on cb.id = cr.blog_id
+                 left join cc_blog_like cbl on cb.id = cbl.blog_id
+                 left join cc_customer cc on cb.user_id = cc.id
+        GROUP BY cb.id
+        order by create_time desc
+        limit 5
+    </select>
+    <select id="getBlogByBlogId" resultType="top.continew.admin.blog.model.resp.ApiBlogResp">
+        select cb.*, count(cr.id) as reviewNum, count(cbl.id) as likeNumber, cc.id as cusomerId, cc.nickname as userName
+        from cc_blog cb
+                 left join cc_review cr on cb.id = cr.blog_id
+                 left join cc_blog_like cbl on cb.id = cbl.blog_id
+                 left join cc_customer cc on cb.user_id = cc.id
+        where cb.id = #{blogId}
+        GROUP BY cb.id
+
     </select>
 </mapper>

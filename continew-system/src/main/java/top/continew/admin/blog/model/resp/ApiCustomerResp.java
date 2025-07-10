@@ -12,4 +12,8 @@ public class ApiCustomerResp {
     private String description;
     private String email;
     private String gender;
+
+    private Integer blogCount;
+    private Integer weekCount;
+    private Integer monthCount;
 }

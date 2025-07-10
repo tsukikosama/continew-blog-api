@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="top.continew.admin.blog.mapper.ReviewMapper">
+    <select id="selectChildReviewList" resultType="top.continew.admin.blog.model.resp.ReviewResp">
+        select cr.*, cc.avatar as userAvatar
+        from cc_review cr
+                 left join cc_customer cc on cr.user_id = cc.id
+            ${ew.customSqlSegment}
+    </select>
+</mapper>
