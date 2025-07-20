@@ -1,21 +1,19 @@
-name: Deploy ContiNew Admin
+name: Deploy
 
 on:
   push:
-    branches:
-      - master
+    branches: [ master ]
   workflow_dispatch:
 
 jobs:
-  build-and-deploy:
+  deploy-server:
     runs-on: ubuntu-latest
-
     steps:
-      # 1. 检出代码
+      # 1、检出代码
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 2. 配置 Java 环境 (AdoptOpenJDK 17)
+      # 2、安装 Java 环境
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
@@ -23,12 +21,15 @@ jobs:
           java-version: 17
           cache: maven
 
-      # 3. 构建整个多模块项目，跳过测试节省时间
-      - name: Build all modules
-        run: mvn clean package -DskipTests
+      # 3、执行 Maven 打包（跳过测试，去除仓库配置）
+      - name: Build with Maven
+        run: |
+          sed -i.bak '/<repositories>/,/<\/repositories>/d' pom.xml
+          sed -i.bak '/<pluginRepositories>/,/<\/pluginRepositories>/d' pom.xml
+          mvn -B package -DskipTests
 
-      # 4. 上传 continew-server 模块的 jar 到远程服务器
-      - name: Upload continew-server jar via SCP
+      # 4、上传 Jar 包到服务器
+      - name: Upload Jar via SCP
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.SERVER_HOST }}
@@ -38,20 +39,32 @@ jobs:
           source: ./continew-server/target/app/bin/continew-server.jar
           target: /www/jar
 
-      # 5. 远程执行启动脚本
-      - name: Start continew-server on remote
-        uses: appleboy/ssh-action@master
+      # 5、SSH 登录远程服务器执行启动脚本
+      - name: Start server via SSH
+        uses: appleboy/ssh-action@v1.6.12
         with:
           host: ${{ secrets.SERVER_HOST }}
           port: ${{ secrets.SERVER_PORT }}
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
-            cd /www/jar || exit 1
-            echo "Stopping old service if exists"
-            pkill -f 'continew-server.jar' || true
-            echo "Starting new service"
+            set -x
+            echo "🟡 切换目录到 /www/jar"
+            cd /www/jar || { echo "❌ 切换目录失败"; exit 1; }
+
+            echo "🟡 停止旧进程"
+            pgrep -f 'continew-server.jar' && pkill -f 'continew-server.jar' || echo "🔹 无旧进程"
+
+            echo "🟡 启动新服务"
             nohup java -jar continew-server.jar > app.log 2>&1 &
+
             sleep 5
-            echo "Last 20 lines of app.log:"
-            tail -n 20 app.log || true
+
+            echo "🟡 查看启动日志尾部"
+            if [ -f app.log ]; then
+              tail -n 20 app.log || echo "⚠️ 日志读取失败"
+            else
+              echo "❌ 未找到 app.log"
+            fi
+
+            echo "✅ 部署完成"
