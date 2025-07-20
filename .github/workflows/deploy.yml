@@ -62,7 +62,7 @@ jobs:
             pgrep -f 'continew-server.jar' && pkill -f 'continew-server.jar' || echo "🔹 无旧进程"
             
             echo "🟡 启动新服务"
-            timeout 30s nohup java -jar continew-server.jar > app.log 2>&1 &
+            nohup java -jar continew-server.jar > app.log 2>&1 &
             disown
             
             echo "✅ 服务启动命令已执行，日志位于 app.log（可通过 SSH 登录查看）"
