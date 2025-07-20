@@ -17,14 +17,14 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
-          distribution: 'adopt'
+          distribution: 'temurin'
           java-version: 17
           cache: maven
 
       # 3、执行 Maven 打包（跳过测试，去除仓库配置）
       - name: Build with Maven
         run: mvn clean package -DskipTests
-        working-directory: ./continew-blog-api  # 多模块根目录
+
 
       # 4、上传 Jar 包到服务器
       - name: Upload Jar via SCP
@@ -35,7 +35,7 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
           source: ./continew-server/target/app/bin/continew-server.jar
-          target: /www/jar
+          target: /www/jar/
 
       # 5、SSH 登录远程服务器执行启动脚本
       - name: Start server via SSH
@@ -46,4 +46,7 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
-            bash /www/jar/start.sh
+            cd /www/jar
+            pkill -f continew-server.jar || true
+            nohup java -jar continew-server.jar > app.log 2>&1 &
+            disown
