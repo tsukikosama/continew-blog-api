@@ -41,7 +41,7 @@ jobs:
 
       # 5、SSH 登录远程服务器执行启动脚本
       - name: Start server via SSH
-        uses: appleboy/ssh-action@v1.6.12
+        uses: appleboy/ssh-action@v0.1.7
         with:
           host: ${{ secrets.SERVER_HOST }}
           port: ${{ secrets.SERVER_PORT }}
