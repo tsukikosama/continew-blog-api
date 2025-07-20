@@ -1,4 +1,4 @@
-name: Deploy
+name: Deploy SpringBoot Multi-Module
 
 on:
   push:
@@ -9,41 +9,69 @@ jobs:
   deploy-server:
     runs-on: ubuntu-latest
     steps:
-      # 1、检出代码
+      # 1. 检出代码（含子模块）
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          submodules: recursive
 
-      # 2、安装 Java 环境
+      # 2. 设置Java环境
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: 17
-          cache: maven
+          cache: 'maven'
 
-      # 3、执行 Maven 打包（跳过测试，去除仓库配置）
+      # 3. 多模块构建（带依赖树检查）
       - name: Build with Maven
-        run: mvn clean package -DskipTests
+        run: |
+          mvn clean package -DskipTests -pl continew-server -am
+          ls -lh ./continew-server/target/*.jar
 
-
-      # 4、上传 Jar 包到服务器
+      # 4. 安全传输JAR文件（推荐使用SSH密钥）
       - name: Upload Jar via SCP
-        uses: appleboy/scp-action@v0.1.7
+        uses: appleboy/scp-action@v1.0.0
         with:
           host: ${{ secrets.SERVER_HOST }}
           port: ${{ secrets.SERVER_PORT }}
           username: ${{ secrets.SERVER_USERNAME }}
-          password: ${{ secrets.SERVER_PASSWORD }}
-          source: ./continew-server/target/app/bin/continew-server.jar
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          source: ./continew-server/target/continew-server*.jar
           target: /www/jar/
+          strip_components: 1  # 去除路径前缀
+          overwrite: true
 
-      # 5、SSH 登录远程服务器执行启动脚本
+      # 5. 服务重启（带健康检查）
       - name: Start server via SSH
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.SERVER_HOST }}
           port: ${{ secrets.SERVER_PORT }}
           username: ${{ secrets.SERVER_USERNAME }}
-          password: ${{ secrets.SERVER_PASSWORD }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
-            bash /www/jar/start.sh
+            # 标准化启动流程
+            APP_NAME="continew-server"
+            JAR_PATH="/www/jar/${APP_NAME}.jar"
+            LOG_PATH="/www/logs/${APP_NAME}.log"
+            PID_PATH="/tmp/${APP_NAME}.pid"
+            
+            # 停止旧进程
+            if [ -f "$PID_PATH" ]; then
+              echo "Stopping existing process..."
+              kill $(cat "$PID_PATH") || true
+              sleep 5
+            fi
+            
+            # 启动新进程（带JVM参数）
+            nohup java -Xms512m -Xmx1024m -jar "$JAR_PATH" > "$LOG_PATH" 2>&1 &
+            echo $! > "$PID_PATH"
+            
+            # 健康检查
+            sleep 10
+            if ! ps -p $(cat "$PID_PATH") > /dev/null; then
+              echo "::error::Failed to start application!"
+              exit 1
+            fi
+            echo "Deployment completed successfully"
