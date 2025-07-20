@@ -1,55 +1,45 @@
-name: Deploy Multi-Module ContiNew Admin
+name: Deploy ContiNew Admin
 
 on:
   push:
-    branches: [ master ]
+    branches:
+      - master
   workflow_dispatch:
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Code
+      # 1. 检出代码
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Java 17
+      # 2. 配置 Java 环境 (AdoptOpenJDK 17)
+      - name: Setup Java
         uses: actions/setup-java@v4
         with:
-          distribution: adopt
+          distribution: 'adopt'
           java-version: 17
           cache: maven
 
-      - name: Build continew-server
-        run: mvn -pl continew-server clean package -DskipTests
+      # 3. 构建整个多模块项目，跳过测试节省时间
+      - name: Build all modules
+        run: mvn clean package -DskipTests
 
-      - name: Build continew-extension-schedule-server
-        run: mvn -pl continew-extension/continew-extension-schedule-server clean package -DskipTests
-
-      # 上传 continew-server Jar
-      - name: Upload continew-server Jar
+      # 4. 上传 continew-server 模块的 jar 到远程服务器
+      - name: Upload continew-server jar via SCP
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.SERVER_HOST }}
           port: ${{ secrets.SERVER_PORT }}
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
-          source: ./continew-server/target/continew-server.jar
-          target: /www/jar/continew-server.jar
+          source: ./continew-server/target/app/bin/continew-server.jar
+          target: /www/jar
 
-      # 上传 continew-extension-schedule-server Jar
-      - name: Upload continew-extension-schedule-server Jar
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          port: ${{ secrets.SERVER_PORT }}
-          username: ${{ secrets.SERVER_USERNAME }}
-          password: ${{ secrets.SERVER_PASSWORD }}
-          source: ./continew-extension/continew-extension-schedule-server/target/continew-extension-schedule-server.jar
-          target: /www/jar/continew-extension-schedule-server.jar
-
-      # 重启 continew-server 服务
-      - name: Restart continew-server
+      # 5. 远程执行启动脚本
+      - name: Start continew-server on remote
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SERVER_HOST }}
@@ -57,23 +47,11 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
-            echo "Stopping continew-server..."
-            pkill -f continew-server.jar || true
-            echo "Starting continew-server..."
-            nohup java -jar /www/jar/continew-server.jar > /www/jar/continew-server.log 2>&1 &
-            echo "continew-server restarted."
-
-      # 重启 continew-extension-schedule-server 服务
-      - name: Restart continew-extension-schedule-server
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          port: ${{ secrets.SERVER_PORT }}
-          username: ${{ secrets.SERVER_USERNAME }}
-          password: ${{ secrets.SERVER_PASSWORD }}
-          script: |
-            echo "Stopping continew-extension-schedule-server..."
-            pkill -f continew-extension-schedule-server.jar || true
-            echo "Starting continew-extension-schedule-server..."
-            nohup java -jar /www/jar/continew-extension-schedule-server.jar > /www/jar/continew-extension-schedule-server.log 2>&1 &
-            echo "continew-extension-schedule-server restarted."
+            cd /www/jar || exit 1
+            echo "Stopping old service if exists"
+            pkill -f 'continew-server.jar' || true
+            echo "Starting new service"
+            nohup java -jar continew-server.jar > app.log 2>&1 &
+            sleep 5
+            echo "Last 20 lines of app.log:"
+            tail -n 20 app.log || true
