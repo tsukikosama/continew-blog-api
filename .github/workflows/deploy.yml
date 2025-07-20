@@ -49,6 +49,12 @@ jobs:
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
             set -x
+            whoami
+            pwd
+            ls -ld /www/jar
+            cd /www/jar || { echo "❌ 切换目录失败"; exit 1; }
+            # 其他命令
+            
             echo "🟡 切换目录到 /www/jar"
             cd /www/jar || { echo "❌ 切换目录失败"; exit 1; }
             
