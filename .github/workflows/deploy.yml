@@ -53,4 +53,6 @@ jobs:
               # 启动 Spring Boot 应用（后台运行）
               nohup java -jar continew-server.jar > app.log 2>&1 &
               # 可选：查看启动日志尾部
-              tail -n 20 app.log
+              if [ -f app.log ]; then
+                tail -n 20 app.log || true
+              fi
