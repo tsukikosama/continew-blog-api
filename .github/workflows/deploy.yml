@@ -51,20 +51,12 @@ jobs:
             set -x
             echo "🟡 切换目录到 /www/jar"
             cd /www/jar || { echo "❌ 切换目录失败"; exit 1; }
-
+            
             echo "🟡 停止旧进程"
             pgrep -f 'continew-server.jar' && pkill -f 'continew-server.jar' || echo "🔹 无旧进程"
-
+            
             echo "🟡 启动新服务"
-            nohup java -jar continew-server.jar > app.log 2>&1 &
-
-            sleep 5
-
-            echo "🟡 查看启动日志尾部"
-            if [ -f app.log ]; then
-              tail -n 20 app.log || echo "⚠️ 日志读取失败"
-            else
-              echo "❌ 未找到 app.log"
-            fi
-
-            echo "✅ 部署完成"
+            timeout 30s nohup java -jar continew-server.jar > app.log 2>&1 &
+            disown
+            
+            echo "✅ 服务启动命令已执行，日志位于 app.log（可通过 SSH 登录查看）"
