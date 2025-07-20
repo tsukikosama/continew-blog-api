@@ -23,10 +23,7 @@ jobs:
 
       # 3、执行 Maven 打包（跳过测试，去除仓库配置）
       - name: Build with Maven
-        run: |
-          sed -i.bak '/<repositories>/,/<\/repositories>/d' pom.xml
-          sed -i.bak '/<pluginRepositories>/,/<\/pluginRepositories>/d' pom.xml
-          mvn clean package -DskipTests
+        run: mvn clean package -DskipTests
 
       # 4、上传 Jar 包到服务器
       - name: Upload Jar via SCP
@@ -41,7 +38,7 @@ jobs:
 
       # 5、SSH 登录远程服务器执行启动脚本
       - name: Start server via SSH
-        uses: appleboy/ssh-action@v0.1.7
+        uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.SERVER_HOST }}
           port: ${{ secrets.SERVER_PORT }}
