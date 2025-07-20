@@ -31,10 +31,10 @@ jobs:
       - name: Copy
         uses: appleboy/scp-action@v0.1.7
         with:
-          host: 8.138.16.124
-          port: 22
-          username: root
-          password: 2270398619aA.
+          host: ${{ secrets.SERVER_HOST }}
+          port: ${{ secrets.SERVER_PORT }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          password: ${{ secrets.SERVER_PASSWORD }}
           source: ./continew-server/target/app/bin/continew-server.jar
           target: /www/jar
       #          strip_components: 3
@@ -42,10 +42,10 @@ jobs:
       - name: Start
         uses: appleboy/ssh-action@master
         with:
-          host: 8.138.16.124
-          port: 22
-          username: root
-          password: 2270398619aA.
+          host: ${{ secrets.SERVER_HOST }}
+          port: ${{ secrets.SERVER_PORT }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          password: ${{ secrets.SERVER_PASSWORD }}
           script: |
               cd /www/jar
               # 如果之前有旧的 java 进程，先杀掉（用你的应用名或端口号替换下面关键字）
