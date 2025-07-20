@@ -46,7 +46,4 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
-            cd /www/jar
-            pkill -f continew-server.jar || true
-            nohup java -jar continew-server.jar > app.log 2>&1 &
-            disown
+            bash /www/jar/start.sh
