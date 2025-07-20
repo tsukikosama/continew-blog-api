@@ -35,7 +35,7 @@ jobs:
           port: 22
           username: root
           password: 2270398619aA.
-          source: ./continew-server/target/continew-server.jar
+          source: ./continew-server/target/app/bin/continew-server.jar
           target: /www/jar
       #          strip_components: 3
       # 5、启动
