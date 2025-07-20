@@ -26,7 +26,7 @@ jobs:
         run: |
           sed -i.bak '/<repositories>/,/<\/repositories>/d' pom.xml
           sed -i.bak '/<pluginRepositories>/,/<\/pluginRepositories>/d' pom.xml
-          mvn -B package -DskipTests
+          mvn clean package -DskipTests
 
       # 4、上传 Jar 包到服务器
       - name: Upload Jar via SCP
@@ -36,7 +36,7 @@ jobs:
           port: ${{ secrets.SERVER_PORT }}
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
-          source: ./continew-extension/continew-extension-schedule-server/target/continew-extension-schedule-server.jar
+          source: ./continew-server/target/app/bin/continew-server.jar
           target: /www/jar
 
       # 5、SSH 登录远程服务器执行启动脚本
