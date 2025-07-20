@@ -47,12 +47,22 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
-              cd /www/jar
-              # 如果之前有旧的 java 进程，先杀掉（用你的应用名或端口号替换下面关键字）
-              pkill -f 'continew-server.jar' || true
-              # 启动 Spring Boot 应用（后台运行）
-              nohup java -jar continew-server.jar > app.log 2>&1 &
-              # 可选：查看启动日志尾部
-              if [ -f app.log ]; then
-                tail -n 20 app.log || true
-              fi
+            echo "🟡 Step 1: 切换目录"
+            cd /www/jar || { echo "❌ 切换目录失败"; exit 1; }
+
+            echo "🟡 Step 2: 停止旧进程"
+            pkill -f 'continew-server.jar' || echo "🔹 无旧进程"
+
+            echo "🟡 Step 3: 启动新服务"
+            nohup java -jar continew-server.jar > app.log 2>&1 &
+
+            sleep 5
+
+            echo "🟡 Step 4: 检查日志输出"
+            if [ -f app.log ]; then
+              tail -n 20 app.log || echo "⚠️ 日志读取失败"
+            else
+              echo "❌ 未找到 app.log"
+            fi
+
+            echo "✅ 部署脚本执行完毕"
