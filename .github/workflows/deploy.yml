@@ -23,7 +23,8 @@ jobs:
 
       # 3、执行 Maven 打包（跳过测试，去除仓库配置）
       - name: Build with Maven
-        run: mvn -pl continew-server package -DskipTests
+        run: mvn clean package -DskipTests
+        working-directory: ./continew-blog-api  # 多模块根目录
 
       # 4、上传 Jar 包到服务器
       - name: Upload Jar via SCP
