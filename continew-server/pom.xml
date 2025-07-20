@@ -73,7 +73,7 @@
 
     <build>
         <!-- 设置构建的 jar 包名 -->
-        <finalName>${project.parent.name}</finalName>
+        <finalName>continew-server</finalName>
         <plugins>
             <!-- Maven 打包插件 -->
             <plugin>
