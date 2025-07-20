@@ -48,21 +48,4 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
-            set -x
-            whoami
-            pwd
-            ls -ld /www/jar
-            cd /www/jar || { echo "❌ 切换目录失败"; exit 1; }
-            # 其他命令
-            
-            echo "🟡 切换目录到 /www/jar"
-            cd /www/jar || { echo "❌ 切换目录失败"; exit 1; }
-            
-            echo "🟡 停止旧进程"
-            pgrep -f 'continew-server.jar' && pkill -f 'continew-server.jar' || echo "🔹 无旧进程"
-            
-            echo "🟡 启动新服务"
-            nohup java -jar continew-server.jar > app.log 2>&1 &
-            disown
-            
-            echo "✅ 服务启动命令已执行，日志位于 app.log（可通过 SSH 登录查看）"
+            bash /www/jar/start.sh
