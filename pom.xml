@@ -82,6 +82,7 @@
                 <artifactId>continew-plugin-generator</artifactId>
                 <version>${revision}</version>
             </dependency>
+
         </dependencies>
     </dependencyManagement>
 

@@ -635,11 +635,24 @@ ALTER TABLE `cc_customer`
 -- changeset weilai:8
 -- comment 修改数据库字符集
 ALTER DATABASE ccblog CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
-ALTER TABLE cc_blog CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-ALTER TABLE cc_blog MODIFY content TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+ALTER TABLE cc_blog
+    CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+ALTER TABLE cc_blog
+    MODIFY content TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- changeset weilai:9
 -- comment 修改评论默认值
 
 ALTER TABLE `ccblog`.`cc_review`
     MODIFY COLUMN `likes` int NULL DEFAULT 0 COMMENT '点赞数' AFTER `content`;
+
+-- changeset weilai:10
+-- comment 新增评论点赞表
+CREATE TABLE `ccblog`.`cc_review_like`
+(
+    `id`          bigint   NOT NULL,
+    `user_id`     bigint   NOT NULL COMMENT '用户id',
+    `review_id`   bigint   NOT NULL COMMENT '评论id',
+    `create_time` datetime NOT NULL COMMENT '点赞时间',
+    PRIMARY KEY (`id`)
+);

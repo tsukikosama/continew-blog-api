@@ -56,4 +56,6 @@ public class RoleContext implements Serializable {
         this.code = code;
         this.dataScope = dataScope;
     }
+
+
 }

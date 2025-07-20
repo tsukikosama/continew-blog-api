@@ -21,7 +21,18 @@
             <groupId>top.continew</groupId>
             <artifactId>continew-common</artifactId>
         </dependency>
-
+        <!-- google gemini api-->
+        <dependency>
+            <groupId>com.google.genai</groupId>
+            <artifactId>google-genai</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <!-- okhttp -->
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>4.12.0</version>
+        </dependency>
         <!-- SMS4J（短信聚合框架，轻松集成多家短信服务，解决接入多个短信 SDK 的繁琐流程） -->
         <dependency>
             <groupId>org.dromara.sms4j</groupId>
