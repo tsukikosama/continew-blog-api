@@ -3,7 +3,7 @@ name: Deploy
 on:
   # 推送时执行
   push:
-    branches: [ dev ]
+    branches: [ master ]
   # 可手动执行
   workflow_dispatch:
 
