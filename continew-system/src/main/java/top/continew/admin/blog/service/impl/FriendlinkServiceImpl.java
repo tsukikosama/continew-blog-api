@@ -1,8 +1,23 @@
+/*
+ * Copyright (c) 2022-present Charles7c Authors. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package top.continew.admin.blog.service.impl;
 
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 
 import top.continew.starter.core.exception.BusinessException;
@@ -16,10 +31,7 @@ import top.continew.admin.blog.model.resp.FriendlinkDetailResp;
 import top.continew.admin.blog.model.resp.FriendlinkResp;
 import top.continew.admin.blog.service.FriendlinkService;
 
-import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
 
 /**
@@ -38,24 +50,22 @@ public class FriendlinkServiceImpl extends BaseServiceImpl<FriendlinkMapper, Fri
         return super.create(req);
     }
 
-
-    public void checkUrlAccessible(String url)  {
+    public void checkUrlAccessible(String url) {
         try {
             if (!url.startsWith("http://") && !url.startsWith("https://")) {
                 url += "http://" + url;
             }
             URL urls = new URL(url);
-            HttpURLConnection conn = (HttpURLConnection) urls.openConnection();
+            HttpURLConnection conn = (HttpURLConnection)urls.openConnection();
             conn.setConnectTimeout(3000);
             conn.setReadTimeout(3000);
             conn.setRequestMethod("GET");
             conn.setInstanceFollowRedirects(true);
             int responseCode = conn.getResponseCode();
-            CheckUtils.throwIfNotEqual(responseCode,200,"网址{}不可访问",url);
-        }catch (Exception e){
-            throw new BusinessException(String.format("网址 %s 不可访问",url));
+            CheckUtils.throwIfNotEqual(responseCode, 200, "网址{}不可访问", url);
+        } catch (Exception e) {
+            throw new BusinessException(String.format("网址 %s 不可访问", url));
         }
     }
-
 
 }

@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2022-present Charles7c Authors. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package top.continew.admin.blog.service.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -29,7 +45,8 @@ import java.util.stream.Collectors;
 public class BlogTypeServiceImpl extends BaseServiceImpl<BlogTypeMapper, BlogTypeDO, BlogTypeResp, BlogTypeDetailResp, BlogTypeQuery, BlogTypeReq> implements BlogTypeService {
     /**
      * 批量保存博客标签关系
-     * @param tagId 标签集合
+     * 
+     * @param tagId  标签集合
      * @param blogId 博客id
      */
     @Override
@@ -46,7 +63,8 @@ public class BlogTypeServiceImpl extends BaseServiceImpl<BlogTypeMapper, BlogTyp
 
     @Override
     public List<Long> getBlogTagByBlogId(Long id) {
-        List<BlogTypeDO> blogTypeDOS = this.baseMapper.selectList(Wrappers.<BlogTypeDO>lambdaQuery().eq(BlogTypeDO::getBlogId, id));
+        List<BlogTypeDO> blogTypeDOS = this.baseMapper.selectList(Wrappers.<BlogTypeDO>lambdaQuery()
+            .eq(BlogTypeDO::getBlogId, id));
         List<Long> collect = blogTypeDOS.stream().map(BlogTypeDO::getTagId).collect(Collectors.toList());
         return collect;
     }

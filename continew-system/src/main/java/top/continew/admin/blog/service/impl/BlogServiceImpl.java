@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2022-present Charles7c Authors. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package top.continew.admin.blog.service.impl;
 
 import cn.dev33.satoken.stp.StpUtil;
@@ -13,7 +29,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import top.continew.admin.blog.model.resp.*;
 import top.continew.admin.blog.service.BlogTypeService;
-import top.continew.starter.data.mp.base.BaseMapper;
 import top.continew.starter.extension.crud.model.query.PageQuery;
 import top.continew.starter.extension.crud.model.resp.BasePageResp;
 import top.continew.starter.extension.crud.model.resp.PageResp;
@@ -57,15 +72,15 @@ public class BlogServiceImpl extends BaseServiceImpl<BlogMapper, BlogDO, BlogRes
         //保存博客标签
         Long blogId = super.create(req);
         //批量保存博客标签关系
-        blogTypeService.batchSaveBlogType(req.getTagId(),blogId);
+        blogTypeService.batchSaveBlogType(req.getTagId(), blogId);
         return blogId;
     }
-
 
     @Override
     public BasePageResp<ApiBlogResp> blogPage(BlogQuery query, PageQuery pageQuery) {
         QueryWrapper<BlogDO> queryWrapper = this.buildQueryWrapper(query);
-        IPage<ApiBlogResp> page = this.baseMapper.selectBlogPage(new Page((long)pageQuery.getPage(), (long)pageQuery.getSize()), queryWrapper);
+        IPage<ApiBlogResp> page = this.baseMapper.selectBlogPage(new Page((long)pageQuery.getPage(), (long)pageQuery
+            .getSize()), queryWrapper);
         PageResp<ApiBlogResp> pageResp = PageResp.build(page, ApiBlogResp.class);
 
         return pageResp;
@@ -89,8 +104,9 @@ public class BlogServiceImpl extends BaseServiceImpl<BlogMapper, BlogDO, BlogRes
     }
 
     @Override
-    public  List<ArchiveResp> getArchive(long loginIdAsLong) {
-        List<BlogDO> blogDOS = this.baseMapper.selectList(Wrappers.<BlogDO>lambdaQuery().eq(BlogDO::getUserId, loginIdAsLong));
+    public List<ArchiveResp> getArchive(long loginIdAsLong) {
+        List<BlogDO> blogDOS = this.baseMapper.selectList(Wrappers.<BlogDO>lambdaQuery()
+            .eq(BlogDO::getUserId, loginIdAsLong));
         List<ArchiveResp.ArchiveItem> itemList = BeanUtil.copyToList(blogDOS, ArchiveResp.ArchiveItem.class);
         List<ArchiveResp> archiveResps = groupByYear(itemList);
         return archiveResps;
@@ -99,19 +115,20 @@ public class BlogServiceImpl extends BaseServiceImpl<BlogMapper, BlogDO, BlogRes
     public List<ArchiveResp> groupByYear(List<ArchiveResp.ArchiveItem> itemList) {
         // 1. 按年份分组，Map<String, List<ArchiveItem>>
         Map<String, List<ArchiveResp.ArchiveItem>> grouped = itemList.stream()
-                .collect(Collectors.groupingBy(item -> item.getCreateTime().toString().substring(0, 4)));
+            .collect(Collectors.groupingBy(item -> item.getCreateTime().toString().substring(0, 4)));
 
         // 2. 转换成 List<ArchiveResp>
-        List<ArchiveResp> result = grouped.entrySet().stream()
-                // 按年份降序排序，最新年份排前面
-                .sorted((e1, e2) -> e2.getKey().compareTo(e1.getKey()))
-                .map(e -> {
-                    ArchiveResp resp = new ArchiveResp();
-                    resp.setYear(e.getKey());
-                    resp.setArchiveList(e.getValue());
-                    return resp;
-                })
-                .collect(Collectors.toList());
+        List<ArchiveResp> result = grouped.entrySet()
+            .stream()
+            // 按年份降序排序，最新年份排前面
+            .sorted((e1, e2) -> e2.getKey().compareTo(e1.getKey()))
+            .map(e -> {
+                ArchiveResp resp = new ArchiveResp();
+                resp.setYear(e.getKey());
+                resp.setArchiveList(e.getValue());
+                return resp;
+            })
+            .collect(Collectors.toList());
 
         return result;
     }

@@ -102,9 +102,9 @@ public class UserContext implements Serializable {
         this.roles = roles;
         if (roles != null) {
             this.roleCodes = roles.stream()
-                    .filter(Objects::nonNull)
-                    .map(RoleContext::getCode)
-                    .collect(Collectors.toSet());
+                .filter(Objects::nonNull)
+                .map(RoleContext::getCode)
+                .collect(Collectors.toSet());
         } else {
             this.roleCodes = Collections.emptySet();
         }

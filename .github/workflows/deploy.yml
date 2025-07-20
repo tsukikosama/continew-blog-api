@@ -3,7 +3,7 @@ name: Deploy
 on:
   # 推送时执行
   push:
-    branches: [dev]
+    branches: [ dev ]
   # 可手动执行
   workflow_dispatch:
 
@@ -31,22 +31,26 @@ jobs:
       - name: Copy
         uses: appleboy/scp-action@v0.1.7
         with:
-          host: ${{ secrets.SERVER_HOST }}
-          port: ${{ secrets.SERVER_PORT }}
-          username: ${{ secrets.SERVER_USERNAME }}
-          password: ${{ secrets.SERVER_PASSWORD }}
-          source: ./continew-server/target/app/*
-          target: /docker/continew-admin
-          strip_components: 3
+          host: 8.138.16.124
+          port: 22
+          username: root
+          password: 2270398619aA.
+          source: ./continew-server/target/continew-server.jar
+          target: /www/jar
+      #          strip_components: 3
       # 5、启动
       - name: Start
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.SERVER_HOST }}
-          port: ${{ secrets.SERVER_PORT }}
-          username: ${{ secrets.SERVER_USERNAME }}
-          password: ${{ secrets.SERVER_PASSWORD }}
+          host: 8.138.16.124
+          port: 22
+          username: root
+          password: 2270398619aA.
           script: |
-            cd /docker
-            docker-compose up --force-recreate --build -d continew-server
-            docker images | grep none | awk '{print $3}' | xargs docker rmi
+              cd /www/jar
+              # 如果之前有旧的 java 进程，先杀掉（用你的应用名或端口号替换下面关键字）
+              pkill -f 'continew-server.jar' || true
+              # 启动 Spring Boot 应用（后台运行）
+              nohup java -jar continew-server.jar > app.log 2>&1 &
+              # 可选：查看启动日志尾部
+              tail -n 20 app.log

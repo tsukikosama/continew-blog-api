@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2022-present Charles7c Authors. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package top.continew.admin.api;
 
 import cn.dev33.satoken.annotation.SaIgnore;
@@ -35,6 +51,7 @@ import java.util.List;
 public class ReviewApiController extends BaseController<ReviewService, ReviewResp, ReviewDetailResp, ReviewQuery, ReviewReq> {
 
     private final CustomerService customerService;
+
     @SaIgnore
     @Override
     public BasePageResp<ReviewResp> page(ReviewQuery query, PageQuery pageQuery) {
@@ -50,7 +67,7 @@ public class ReviewApiController extends BaseController<ReviewService, ReviewRes
 
     @PostMapping("/reply")
     @Operation(summary = "评论", description = "评论")
-    public void review(@RequestBody ApiReviewReq req){
+    public void review(@RequestBody ApiReviewReq req) {
         this.baseService.review(req);
     }
 }

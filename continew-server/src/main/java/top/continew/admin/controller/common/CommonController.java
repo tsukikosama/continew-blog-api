@@ -131,7 +131,7 @@ public class CommonController {
     @Operation(summary = "查询标签字典", description = "查询标签字典")
     @GetMapping("/dict/tag")
     public List<LabelValueResp> listTagDict(TagQuery query, SortQuery sortQuery) {
-        return tagService.listDict(query,sortQuery);
+        return tagService.listDict(query, sortQuery);
     }
 
 }
