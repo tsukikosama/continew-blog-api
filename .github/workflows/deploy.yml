@@ -23,54 +23,25 @@ jobs:
           java-version: 17
           cache: 'maven'
 
-      # 3. 多模块构建（带依赖树检查）
-      - name: Build with Maven
-        run: |
-          mvn clean install -DskipTests -pl continew-server,continew-extension -am
-          ls -lh ./continew-server/target/*.jar
-          find continew-extension/ -name "*.jar"
+      # 3. 打包全部模块（包括子模块）
+      - name: Build all modules
+        run: mvn clean install -DskipTests
 
-      # 4. 安装 sshpass（在 runner 上）
-      - name: Install sshpass
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y sshpass
-
-      # 5. 上传 continew-extension 下所有 jar
-      - name: Upload all jars in continew-extension via sshpass+scp
-        env:
-          SERVER_HOST: ${{ secrets.SERVER_HOST }}
-          SERVER_PORT: ${{ secrets.SERVER_PORT }}
-          SERVER_USERNAME: ${{ secrets.SERVER_USERNAME }}
-          SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
-        run: |
-          echo "Finding all jars in continew-extension..."
-          jars=$(find continew-extension/ -name "*.jar")
-          echo "Found jars:"
-          echo "$jars"
-
-          # 先确保远程目录存在
-          sshpass -p "$SERVER_PASSWORD" ssh -o StrictHostKeyChecking=no -p "$SERVER_PORT" "$SERVER_USERNAME@$SERVER_HOST" "mkdir -p /www/jar/extension/"
-
-          for jar in $jars; do
-            echo "Uploading $jar ..."
-            sshpass -p "$SERVER_PASSWORD" scp -o StrictHostKeyChecking=no -P "$SERVER_PORT" "$jar" "$SERVER_USERNAME@$SERVER_HOST:/www/jar/extension/"
-          done
-
-      # 6. 上传主服务 jar（continew-server）
-      - name: Upload continew-server.jar via appleboy/scp-action
+      # 4. 查找所有jar并上传（用appleboy/scp-action支持多文件上传）
+      - name: Upload all jars
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.SERVER_HOST }}
           port: ${{ secrets.SERVER_PORT }}
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
-          source: continew-server/target/app/bin/continew-server.jar
+          source: |
+            $(find . -name "*.jar" -path "*/target/*.jar")
           target: /www/jar/
           overwrite: true
 
-      # 7. 远程启动服务
-      - name: Start server via SSH
+      # 5. 远程重启服务（这里以continew-server为例）
+      - name: Restart continew-server service
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.SERVER_HOST }}
