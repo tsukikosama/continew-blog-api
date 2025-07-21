@@ -28,11 +28,37 @@ jobs:
         run: |
           mvn clean install -DskipTests -pl continew-server,continew-extension -am
           ls -lh ./continew-server/target/*.jar
-      - name: Find all jar files
-        run: find . -name "*.jar"
+          find continew-extension/ -name "*.jar"
 
-      # 4. 安全传输JAR文件（推荐使用SSH密钥）
-      - name: Upload continew-server.jar
+      # 4. 安装 sshpass（在 runner 上）
+      - name: Install sshpass
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y sshpass
+
+      # 5. 上传 continew-extension 下所有 jar
+      - name: Upload all jars in continew-extension via sshpass+scp
+        env:
+          SERVER_HOST: ${{ secrets.SERVER_HOST }}
+          SERVER_PORT: ${{ secrets.SERVER_PORT }}
+          SERVER_USERNAME: ${{ secrets.SERVER_USERNAME }}
+          SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
+        run: |
+          echo "Finding all jars in continew-extension..."
+          jars=$(find continew-extension/ -name "*.jar")
+          echo "Found jars:"
+          echo "$jars"
+
+          # 先确保远程目录存在
+          sshpass -p "$SERVER_PASSWORD" ssh -o StrictHostKeyChecking=no -p "$SERVER_PORT" "$SERVER_USERNAME@$SERVER_HOST" "mkdir -p /www/jar/extension/"
+
+          for jar in $jars; do
+            echo "Uploading $jar ..."
+            sshpass -p "$SERVER_PASSWORD" scp -o StrictHostKeyChecking=no -P "$SERVER_PORT" "$jar" "$SERVER_USERNAME@$SERVER_HOST:/www/jar/extension/"
+          done
+
+      # 6. 上传主服务 jar（continew-server）
+      - name: Upload continew-server.jar via appleboy/scp-action
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.SERVER_HOST }}
@@ -43,18 +69,7 @@ jobs:
           target: /www/jar/
           overwrite: true
 
-      - name: Upload continew-extension.jar
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          port: ${{ secrets.SERVER_PORT }}
-          username: ${{ secrets.SERVER_USERNAME }}
-          password: ${{ secrets.SERVER_PASSWORD }}
-          source: continew-extension/target/continew-extension.jar
-          target: /www/jar/
-          overwrite: true
-
-      # 5. 服务重启（带健康检查）
+      # 7. 远程启动服务
       - name: Start server via SSH
         uses: appleboy/ssh-action@v1.0.0
         with:
@@ -63,21 +78,20 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
-            # 标准化启动流程
             APP_NAME="continew-server"
             JAR_PATH="/www/jar/${APP_NAME}.jar"
-       
+            LOG_PATH="/www/logs/${APP_NAME}.log"
             PID_PATH="/tmp/${APP_NAME}.pid"
-            
-            # 停止旧进程
+
+            mkdir -p /www/logs/
+
             if [ -f "$PID_PATH" ]; then
               echo "Stopping existing process..."
               kill $(cat "$PID_PATH") || true
               sleep 5
             fi
-            
-            # 启动新进程（带JVM参数）
+
             nohup java -Xms512m -Xmx1024m -jar "$JAR_PATH" > "$LOG_PATH" 2>&1 &
             echo $! > "$PID_PATH"
-          
+
             echo "Deployment completed successfully"
