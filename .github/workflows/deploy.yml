@@ -1,44 +1,6 @@
-name: CI/CD for Multi-module Spring Boot
-
-on:
-  push:
-    branches:
-      - master  # 监听main分支的push
-
-jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: 17
-
-      - name: Build with Maven
-        run: mvn clean package -T 1C -DskipTests
-
-      - name: Copy artifact to remote server
-        uses: appleboy/scp-action@v0.1.5
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          port: ${{ secrets.SERVER_PORT }}
-          username: ${{ secrets.SERVER_USERNAME }}
-          password: ${{ secrets.SERVER_PASSWORD }}
-          source: 'continew-server/target/continew-server.jar'  # 你的jar路径，根据项目调整
-          target: '/www/jar/'  # 服务器目录
-
-      - name: Restart remote service
-        uses: appleboy/ssh-action@v0.1.6
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          port: ${{ secrets.SERVER_PORT }}
-          username: ${{ secrets.SERVER_USERNAME }}
-          password: ${{ secrets.SERVER_PASSWORD }}
-          script: |
-            cd /www/jar
-            ./start.sh
+runs-on: self-hosted
+steps:
+  - name: Build and restart
+    run: |
+      mvn clean package -DskipTests
+      bash ./restart.sh
