@@ -29,7 +29,7 @@ jobs:
 
       # 4. 查找所有jar并上传（用appleboy/scp-action支持多文件上传）
       - name: Upload all jars
-        uses: appleboy/scp-action@v0.1.7
+        uses: appleboy/scp-action@v1.0.0
         with:
           host: ${{ secrets.SERVER_HOST }}
           port: ${{ secrets.SERVER_PORT }}
