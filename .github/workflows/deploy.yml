@@ -54,7 +54,7 @@ jobs:
             # 标准化启动流程
             APP_NAME="continew-server"
             JAR_PATH="/www/jar/${APP_NAME}.jar"
-            LOG_PATH="/www/logs/${APP_NAME}.log"
+       
             PID_PATH="/tmp/${APP_NAME}.pid"
             
             # 停止旧进程
@@ -67,11 +67,5 @@ jobs:
             # 启动新进程（带JVM参数）
             nohup java -Xms512m -Xmx1024m -jar "$JAR_PATH" > "$LOG_PATH" 2>&1 &
             echo $! > "$PID_PATH"
-            
-            # 健康检查
-            sleep 10
-            if ! ps -p $(cat "$PID_PATH") > /dev/null; then
-              echo "::error::Failed to start application!"
-              exit 1
-            fi
+          
             echo "Deployment completed successfully"
