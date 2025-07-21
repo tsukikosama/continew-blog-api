@@ -39,9 +39,7 @@ jobs:
           port: ${{ secrets.SERVER_PORT }}
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
-          source: |
-            continew-server/target/continew-server*.jar
-            continew-extension/target/continew-extension.jar
+          source: continew-server/target/continew-server*.jar,continew-extension/target/continew-extension.jar
           target: /www/jar/
           strip_components: 1  # 去除路径前缀
           overwrite: true
