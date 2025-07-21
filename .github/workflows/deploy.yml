@@ -20,7 +20,7 @@ jobs:
           java-version: 17
 
       - name: Build with Maven
-        run: mvn clean package -DskipTests
+        run: mvn clean package -T 1C -DskipTests
 
       - name: Copy artifact to remote server
         uses: appleboy/scp-action@v0.1.5
