@@ -26,7 +26,7 @@ jobs:
       # 3. 多模块构建（带依赖树检查）
       - name: Build with Maven
         run: |
-          mvn clean package -DskipTests -pl continew-server -am
+          mvn clean package -DskipTests -pl continew-server,continew-plugin -am
           ls -lh ./continew-server/target/*.jar
 
       # 4. 安全传输JAR文件（推荐使用SSH密钥）
