@@ -42,6 +42,7 @@ jobs:
           source: continew-server/target/continew-server*.jar,continew-extension/target/continew-extension.jar
           target: /www/jar/
           overwrite: true
+          debug: true
 
       # 5. 服务重启（带健康检查）
       - name: Start server via SSH
