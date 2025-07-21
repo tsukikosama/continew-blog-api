@@ -28,9 +28,8 @@ jobs:
         run: |
           mvn clean package -DskipTests -pl continew-server,continew-extension-schedule-server -am
           ls -lh ./continew-server/target/*.jar
-      - name: List JAR files for debug
-        run: |
-          find . -name "*.jar"
+      - name: Find all jar files
+        run: find . -name "*.jar"
 
       # 4. 安全传输JAR文件（推荐使用SSH密钥）
       - name: Upload Jar via SCP
