@@ -26,7 +26,7 @@ jobs:
       # 3. 多模块构建（带依赖树检查）
       - name: Build with Maven
         run: |
-          mvn clean package -DskipTests -pl continew-server,continew-extension-schedule-server -am
+          mvn clean package -DskipTests -pl continew-server,continew-extension -am
           ls -lh ./continew-server/target/*.jar
       - name: Find all jar files
         run: find . -name "*.jar"
@@ -41,7 +41,7 @@ jobs:
           password: ${{ secrets.SERVER_PASSWORD }}
           source: |
             continew-server/target/continew-server*.jar
-            continew-extension-schedule-server/target/continew-extension-schedule-server.jar
+            continew-extension/target/continew-extension.jar
           target: /www/jar/
           strip_components: 1  # 去除路径前缀
           overwrite: true
