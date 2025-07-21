@@ -3,7 +3,7 @@ name: CI/CD for Multi-module Spring Boot
 on:
   push:
     branches:
-      - main  # 监听main分支的push
+      - master  # 监听main分支的push
 
 jobs:
   build-and-deploy:
