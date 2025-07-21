@@ -1,6 +1,22 @@
-runs-on: self-hosted
-steps:
-  - name: Build and restart
-    run: |
-      mvn clean package -DskipTests
-      bash ./restart.sh
+name: CI/CD
+
+on:
+  push:
+    branches:
+      - master  # 监听 master 分支代码更新
+jobs:
+  build-and-deploy:
+    runs-on: self-hosted  # 使用你配置的自托管 Runner
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build with Maven
+        run: mvn clean package -DskipTests
+
+      - name: Deploy artifact to server
+        run: |
+          scp target/continew-server/target/continew-server.jar miku@8.138.16.124:/www/jar
+          scp target/continew-extension/target/continew-extension-schedule-server.jar miku@8.138.16.124:/www/jar
+          ssh miku@8.138.16.124 'systemctl restart your-app.service' # 或用其他脚本重启服务
