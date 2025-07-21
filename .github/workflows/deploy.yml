@@ -28,6 +28,9 @@ jobs:
         run: |
           mvn clean package -DskipTests -pl continew-server,continew-extension -am
           ls -lh ./continew-server/target/*.jar
+      - name: List JAR files for debug
+        run: |
+          find . -name "*.jar"
 
       # 4. 安全传输JAR文件（推荐使用SSH密钥）
       - name: Upload Jar via SCP
@@ -38,8 +41,8 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
           source: |
-            ./continew-server/target/continew-server*.jar
-            ./continew-extension/target/continew-extension*.jar
+              continew-server/target/continew-server*.jar
+              continew-extension/target/continew-extension*.jar
           target: /www/jar/
           strip_components: 1  # 去除路径前缀
           overwrite: true
