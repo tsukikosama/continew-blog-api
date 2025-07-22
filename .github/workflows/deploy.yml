@@ -21,7 +21,7 @@ jobs:
           java-version: 17
 
       - name: Maven build package
-        run: mvn clean package -DskipTests
+        run: mvn clean package -DskipTests -Dsonar.skip=true
 
       - name: Upload app1 jar
         uses: appleboy/scp-action@master

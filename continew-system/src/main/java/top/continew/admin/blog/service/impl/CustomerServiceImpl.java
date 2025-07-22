@@ -133,7 +133,7 @@ public class CustomerServiceImpl extends BaseServiceImpl<CustomerMapper, Custome
         wrapper.set(StringUtils.isNotBlank(req.getNickname()),CustomerDO::getNickname, req.getNickname())
                 .set(StringUtils.isNotBlank(req.getEmail()),CustomerDO::getEmail, req.getEmail())
                 .set(StringUtils.isNotBlank(req.getAvatar()),CustomerDO::getAvatar, req.getAvatar())
-                        .set(StringUtils.isNotBlank(req.getGender()),CustomerDO::getGender, req.getGender())
+                .set(StringUtils.isNotBlank(req.getGender()),CustomerDO::getGender, req.getGender())
                 .set(StringUtils.isNotBlank(req.getDescription()),CustomerDO::getDescription, req.getDescription())
                 .eq(CustomerDO::getId, customerDO.getId());
         this.baseMapper.update(null, wrapper);
