@@ -23,6 +23,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import top.continew.admin.blog.model.req.ApiCustomerUpdateReq;
 import top.continew.admin.blog.model.req.CustomerLoginReq;
 import top.continew.admin.blog.model.req.CustomerReq;
 import top.continew.admin.blog.model.resp.ApiCustomerResp;
@@ -63,6 +64,13 @@ public class CustomerApiController {
         apiCustomerResp.setBlogCount(apiCustomerResp2.getBlogCount());
         apiCustomerResp.setWeekCount(apiCustomerResp2.getWeekCount());
         return apiCustomerResp;
+    }
+
+    @PutMapping("/update")
+    @Operation(summary = "更新用户信息", description = "更新用户信息")
+    public Void update(@RequestBody ApiCustomerUpdateReq req) {
+        customerService.updateCustomer(req);
+        return null;
     }
 
 }

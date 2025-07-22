@@ -16,6 +16,7 @@
 
 package top.continew.admin.blog.service;
 
+import top.continew.admin.blog.model.req.ApiCustomerUpdateReq;
 import top.continew.admin.blog.model.req.CustomerLoginReq;
 import top.continew.starter.extension.crud.service.BaseService;
 import top.continew.admin.blog.model.query.CustomerQuery;
@@ -34,4 +35,5 @@ public interface CustomerService extends BaseService<CustomerResp, CustomerDetai
 
     String loginCustomer(CustomerLoginReq req);
 
+    void updateCustomer(ApiCustomerUpdateReq req);
 }

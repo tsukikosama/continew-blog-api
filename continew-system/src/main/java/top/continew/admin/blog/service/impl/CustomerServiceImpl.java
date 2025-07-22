@@ -21,17 +21,21 @@ import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.crypto.SecureUtil;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
 
+import top.continew.admin.blog.model.req.ApiCustomerUpdateReq;
 import top.continew.admin.blog.model.req.CustomerLoginReq;
 import top.continew.admin.common.context.RoleContext;
 import top.continew.admin.common.context.UserContext;
 import top.continew.admin.system.model.resp.ClientResp;
 import top.continew.admin.system.service.ClientService;
 import top.continew.starter.core.validation.CheckUtils;
+import top.continew.starter.extension.crud.model.query.SortQuery;
 import top.continew.starter.extension.crud.service.BaseServiceImpl;
 import top.continew.admin.blog.mapper.CustomerMapper;
 import top.continew.admin.blog.model.entity.CustomerDO;
@@ -118,5 +122,22 @@ public class CustomerServiceImpl extends BaseServiceImpl<CustomerMapper, Custome
 
         return "Bearer " + StpUtil.getTokenValue();
     }
+
+    @Override
+    public void updateCustomer(ApiCustomerUpdateReq req) {
+        //获取当前的用户信息
+        CustomerDO customerDO = this.baseMapper.selectById(StpUtil.getLoginIdAsLong());
+        CheckUtils.throwIfNull(customerDO, "用户不存在");
+
+        LambdaUpdateWrapper<CustomerDO> wrapper = Wrappers.lambdaUpdate();
+        wrapper.set(StringUtils.isNotBlank(req.getNickname()),CustomerDO::getNickname, req.getNickname())
+                .set(StringUtils.isNotBlank(req.getEmail()),CustomerDO::getEmail, req.getEmail())
+                .set(StringUtils.isNotBlank(req.getAvatar()),CustomerDO::getAvatar, req.getAvatar())
+                        .set(StringUtils.isNotBlank(req.getGender()),CustomerDO::getGender, req.getGender())
+                .set(StringUtils.isNotBlank(req.getDescription()),CustomerDO::getDescription, req.getDescription())
+                .eq(CustomerDO::getId, customerDO.getId());
+        this.baseMapper.update(null, wrapper);
+    }
+
 
 }
