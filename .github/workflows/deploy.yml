@@ -43,13 +43,13 @@ jobs:
           source: "continew-extension/continew-extension-schedule-server/target/continew-extension-schedule-server.jar"
           target: "/www/jar/"
 
-      - name: Restart Spring Boot app on server
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          port: ${{ secrets.SERVER_PORT }}
-          username: ${{ secrets.SERVER_USERNAME }}
-          password: ${{ secrets.SERVER_PASSWORD }}
-          script: |
-            pkill -f app.jar || true
-            nohup java -jar /home/deploy/apps/app.jar > /home/deploy/apps/app.log 2>&1 &
+#      - name: Restart Spring Boot app on server
+#        uses: appleboy/ssh-action@master
+#        with:
+#          host: ${{ secrets.SERVER_HOST }}
+#          port: ${{ secrets.SERVER_PORT }}
+#          username: ${{ secrets.SERVER_USERNAME }}
+#          password: ${{ secrets.SERVER_PASSWORD }}
+#          script: |
+#            pkill -f app.jar || true
+#            nohup java -jar /home/deploy/apps/app.jar > /home/deploy/apps/app.log 2>&1 &

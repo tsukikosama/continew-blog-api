@@ -28,6 +28,7 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
 
+import top.continew.admin.blog.model.req.ApiCustomerUpdatePswdReq;
 import top.continew.admin.blog.model.req.ApiCustomerUpdateReq;
 import top.continew.admin.blog.model.req.CustomerLoginReq;
 import top.continew.admin.common.context.RoleContext;
@@ -139,5 +140,17 @@ public class CustomerServiceImpl extends BaseServiceImpl<CustomerMapper, Custome
         this.baseMapper.update(null, wrapper);
     }
 
+    @Override
+    public void updateCustomerPswd(ApiCustomerUpdatePswdReq req) {
+        //获取当前的用户信息
+        CustomerDO customerDO = this.baseMapper.selectById(StpUtil.getLoginIdAsLong());
+        CheckUtils.throwIfNull(customerDO, "用户不存在");
+
+        CheckUtils.throwIfNotEqual(customerDO.getPassword(), SecureUtil.md5(req.getOldPswd()), "账号{}密码错误", customerDO.getUsername());
+        LambdaUpdateWrapper<CustomerDO> wrapper = Wrappers.lambdaUpdate();
+        wrapper.set(CustomerDO::getPassword, SecureUtil.md5(req.getNewPswd()));
+        wrapper.eq(CustomerDO::getId, customerDO.getId());
+        this.baseMapper.update(null, wrapper);
+    }
 
 }

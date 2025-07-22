@@ -23,6 +23,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import top.continew.admin.blog.model.req.ApiCustomerUpdatePswdReq;
 import top.continew.admin.blog.model.req.ApiCustomerUpdateReq;
 import top.continew.admin.blog.model.req.CustomerLoginReq;
 import top.continew.admin.blog.model.req.CustomerReq;
@@ -70,6 +71,13 @@ public class CustomerApiController {
     @Operation(summary = "更新用户信息", description = "更新用户信息")
     public Void update(@RequestBody ApiCustomerUpdateReq req) {
         customerService.updateCustomer(req);
+        return null;
+    }
+
+    @PutMapping("/updatePswd")
+    @Operation(summary = "更新用户密码", description = "更新用户密码")
+    public Void updatePswd(@RequestBody ApiCustomerUpdatePswdReq req) {
+        customerService.updateCustomerPswd(req);
         return null;
     }
 
