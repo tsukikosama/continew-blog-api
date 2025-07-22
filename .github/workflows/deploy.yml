@@ -17,6 +17,5 @@ jobs:
 
       - name: Deploy artifact to server
         run: |
-          scp target/continew-server/target/continew-server.jar miku@8.138.16.124:/www/jar
-          scp target/continew-extension/target/continew-extension-schedule-server.jar miku@8.138.16.124:/www/jar
-          ssh miku@8.138.16.124 'systemctl restart your-app.service' # 或用其他脚本重启服务
+          source ~/.bashrc
+          mvn clean package -DskipTests
