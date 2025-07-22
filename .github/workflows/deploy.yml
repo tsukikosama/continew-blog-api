@@ -1,21 +1,23 @@
-name: CI/CD
+name: CI/CD Pipeline
 
 on:
   push:
     branches:
-      - master  # 监听 master 分支代码更新
+      - master
+
 jobs:
   build-and-deploy:
-    runs-on: self-hosted  # 使用你配置的自托管 Runner
+    runs-on: self-hosted
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Build with Maven
-        run: mvn clean package -DskipTests
-
-      - name: Deploy artifact to server
         run: |
-          source ~/.bashrc
+          source ~/.bashrc       # 加载环境变量（如SDKMAN）
           mvn clean package -DskipTests
+
+      - name: Deploy to local server
+        run: |
+          bash ./deploy.sh
