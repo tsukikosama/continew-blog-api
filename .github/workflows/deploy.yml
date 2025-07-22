@@ -31,7 +31,7 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
           source: "continew-server/target/continew-server.jar"
-          target: "/www/jar/continew-server.jar"
+          target: "/www/jar/"
 
       - name: Upload app2 jar
         uses: appleboy/scp-action@master
@@ -41,7 +41,7 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
           source: "continew-extension/continew-extension-schedule-server/target/continew-extension-schedule-server.jar"
-          target: "/www/jar/continew-extension-schedule-server.jar"
+          target: "/www/jar/"
 
       - name: Restart Spring Boot app on server
         uses: appleboy/ssh-action@master
