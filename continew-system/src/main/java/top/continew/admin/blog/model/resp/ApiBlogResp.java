@@ -34,7 +34,7 @@ public class ApiBlogResp {
     private String simpleTitle;
     private String userId;
     private String userName;
-    private List<TagDO> list;
+    private List<TagDO> tagList;
     private Integer reviewNum;
     private Integer likeNumber;
     private LocalDateTime createTime;

@@ -27,6 +27,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
+import top.continew.admin.blog.model.entity.BlogTypeDO;
+import top.continew.admin.blog.model.entity.TagDO;
 import top.continew.admin.blog.model.resp.*;
 import top.continew.admin.blog.service.BlogTypeService;
 import top.continew.starter.extension.crud.model.query.PageQuery;
@@ -59,8 +61,9 @@ public class BlogServiceImpl extends BaseServiceImpl<BlogMapper, BlogDO, BlogRes
     public PageResp<BlogResp> page(BlogQuery query, PageQuery pageQuery) {
         PageResp<BlogResp> page = super.page(query, pageQuery);
         page.getList().forEach(item -> {
-            List<Long> list = blogTypeService.getBlogTagByBlogId(item.getId());
-            item.setTagId(list);
+            List<BlogTypeDO> list = blogTypeService.getBlogTagByBlogId(item.getId());
+            List<Long> collect = list.stream().map(BlogTypeDO::getTagId).collect(Collectors.toList());
+            item.setTagId(collect);
         });
         return page;
     }
@@ -82,7 +85,10 @@ public class BlogServiceImpl extends BaseServiceImpl<BlogMapper, BlogDO, BlogRes
         IPage<ApiBlogResp> page = this.baseMapper.selectBlogPage(new Page((long)pageQuery.getPage(), (long)pageQuery
             .getSize()), queryWrapper);
         PageResp<ApiBlogResp> pageResp = PageResp.build(page, ApiBlogResp.class);
-
+        pageResp.getList().forEach(item -> {
+            List<BlogTypeDO> list = blogTypeService.getBlogTagByBlogId(item.getId());
+            item.setTagList(BeanUtil.copyToList(list,TagDO.class));
+        });
         return pageResp;
     }
 
@@ -110,6 +116,12 @@ public class BlogServiceImpl extends BaseServiceImpl<BlogMapper, BlogDO, BlogRes
         List<ArchiveResp.ArchiveItem> itemList = BeanUtil.copyToList(blogDOS, ArchiveResp.ArchiveItem.class);
         List<ArchiveResp> archiveResps = groupByYear(itemList);
         return archiveResps;
+    }
+
+    @Override
+    public BasePageResp<ApiBlogResp> customPage(BlogQuery query, PageQuery pageQuery) {
+
+        return null;
     }
 
     public List<ArchiveResp> groupByYear(List<ArchiveResp.ArchiveItem> itemList) {

@@ -61,4 +61,9 @@ public class BlogApiController {
         return blogService.getBlogByBlogId(blogId);
     }
 
+    @GetMapping("/my/blog")
+    @Operation(summary = "查询自己的博客", description = "查询自己的博客")
+    public BasePageResp<ApiBlogResp> myBlog(BlogQuery query, PageQuery pageQuery) {
+        return blogService.customPage(query, pageQuery);
+    }
 }
