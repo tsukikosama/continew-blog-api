@@ -66,4 +66,10 @@ public class BlogApiController {
     public BasePageResp<ApiBlogResp> myBlog(BlogQuery query, PageQuery pageQuery) {
         return blogService.customPage(query, pageQuery);
     }
+
+    //    @GetMapping("/tag/{tagId}")
+    //    @Operation(summary = "通过标签来查询博客", description = "通过标签来查询博客")
+    //    public BasePageResp<ApiBlogResp> getBlogByTag(@PathVariable("tagId")Long tagId, PageQuery pageQuery) {
+    //
+    //    }
 }

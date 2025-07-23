@@ -87,7 +87,7 @@ public class BlogServiceImpl extends BaseServiceImpl<BlogMapper, BlogDO, BlogRes
         PageResp<ApiBlogResp> pageResp = PageResp.build(page, ApiBlogResp.class);
         pageResp.getList().forEach(item -> {
             List<BlogTypeDO> list = blogTypeService.getBlogTagByBlogId(item.getId());
-            item.setTagList(BeanUtil.copyToList(list,TagDO.class));
+            item.setTagList(BeanUtil.copyToList(list, TagDO.class));
         });
         return pageResp;
     }

@@ -36,7 +36,6 @@ import top.continew.admin.common.context.UserContext;
 import top.continew.admin.system.model.resp.ClientResp;
 import top.continew.admin.system.service.ClientService;
 import top.continew.starter.core.validation.CheckUtils;
-import top.continew.starter.extension.crud.model.query.SortQuery;
 import top.continew.starter.extension.crud.service.BaseServiceImpl;
 import top.continew.admin.blog.mapper.CustomerMapper;
 import top.continew.admin.blog.model.entity.CustomerDO;
@@ -131,12 +130,12 @@ public class CustomerServiceImpl extends BaseServiceImpl<CustomerMapper, Custome
         CheckUtils.throwIfNull(customerDO, "用户不存在");
 
         LambdaUpdateWrapper<CustomerDO> wrapper = Wrappers.lambdaUpdate();
-        wrapper.set(StringUtils.isNotBlank(req.getNickname()),CustomerDO::getNickname, req.getNickname())
-                .set(StringUtils.isNotBlank(req.getEmail()),CustomerDO::getEmail, req.getEmail())
-                .set(StringUtils.isNotBlank(req.getAvatar()),CustomerDO::getAvatar, req.getAvatar())
-                .set(StringUtils.isNotBlank(req.getGender()),CustomerDO::getGender, req.getGender())
-                .set(StringUtils.isNotBlank(req.getDescription()),CustomerDO::getDescription, req.getDescription())
-                .eq(CustomerDO::getId, customerDO.getId());
+        wrapper.set(StringUtils.isNotBlank(req.getNickname()), CustomerDO::getNickname, req.getNickname())
+            .set(StringUtils.isNotBlank(req.getEmail()), CustomerDO::getEmail, req.getEmail())
+            .set(StringUtils.isNotBlank(req.getAvatar()), CustomerDO::getAvatar, req.getAvatar())
+            .set(StringUtils.isNotBlank(req.getGender()), CustomerDO::getGender, req.getGender())
+            .set(StringUtils.isNotBlank(req.getDescription()), CustomerDO::getDescription, req.getDescription())
+            .eq(CustomerDO::getId, customerDO.getId());
         this.baseMapper.update(null, wrapper);
     }
 
@@ -146,7 +145,8 @@ public class CustomerServiceImpl extends BaseServiceImpl<CustomerMapper, Custome
         CustomerDO customerDO = this.baseMapper.selectById(StpUtil.getLoginIdAsLong());
         CheckUtils.throwIfNull(customerDO, "用户不存在");
 
-        CheckUtils.throwIfNotEqual(customerDO.getPassword(), SecureUtil.md5(req.getOldPswd()), "账号{}密码错误", customerDO.getUsername());
+        CheckUtils.throwIfNotEqual(customerDO.getPassword(), SecureUtil.md5(req.getOldPswd()), "账号{}密码错误", customerDO
+            .getUsername());
         LambdaUpdateWrapper<CustomerDO> wrapper = Wrappers.lambdaUpdate();
         wrapper.set(CustomerDO::getPassword, SecureUtil.md5(req.getNewPswd()));
         wrapper.eq(CustomerDO::getId, customerDO.getId());
