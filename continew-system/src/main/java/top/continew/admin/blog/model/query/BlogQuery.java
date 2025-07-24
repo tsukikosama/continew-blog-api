@@ -74,4 +74,12 @@ public class BlogQuery implements Serializable {
     @Query(type = QueryType.EQ)
     private Long createUser;
 
+    @Schema(description = "创建用户")
+    @Query(type = QueryType.EQ)
+    private Long userId;
+
+
+    @Schema(description = "标签id")
+    @Query(type = QueryType.EQ)
+    private Long tagId;
 }

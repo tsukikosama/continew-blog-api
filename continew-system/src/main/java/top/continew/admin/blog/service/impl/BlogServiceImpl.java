@@ -18,6 +18,7 @@ package top.continew.admin.blog.service.impl;
 
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.bean.BeanUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -80,7 +81,7 @@ public class BlogServiceImpl extends BaseServiceImpl<BlogMapper, BlogDO, BlogRes
     }
 
     @Override
-    public BasePageResp<ApiBlogResp> blogPage(BlogQuery query, PageQuery pageQuery) {
+    public BasePageResp<ApiBlogResp> customPage(BlogQuery query, PageQuery pageQuery) {
         QueryWrapper<BlogDO> queryWrapper = this.buildQueryWrapper(query);
         IPage<ApiBlogResp> page = this.baseMapper.selectBlogPage(new Page((long)pageQuery.getPage(), (long)pageQuery
             .getSize()), queryWrapper);
@@ -118,11 +119,25 @@ public class BlogServiceImpl extends BaseServiceImpl<BlogMapper, BlogDO, BlogRes
         return archiveResps;
     }
 
-    @Override
-    public BasePageResp<ApiBlogResp> customPage(BlogQuery query, PageQuery pageQuery) {
+//    /**
+//     * 查询自己的博客
+//     * @param query
+//     * @param pageQuery
+//     * @return
+//     */
+//    @Override
+//    public BasePageResp<ApiBlogResp> customPage(BlogQuery query, PageQuery pageQuery) {
+//        LambdaQueryWrapper<BlogDO> eq = Wrappers.<BlogDO>lambdaQuery().eq(BlogDO::getUserId, StpUtil.getLoginIdAsLong());
+//        Page<BlogDO> blogDOPage = this.baseMapper.selectPage(new Page<>(pageQuery.getPage(), pageQuery.getSize()), eq);
+//        return PageResp.build(blogDOPage, ApiBlogResp.class);
+//    }
 
-        return null;
-    }
+//    @Override
+//    public BasePageResp<ApiBlogResp> customPageByTagId(Long tagId, PageQuery pageQuery) {
+//        LambdaQueryWrapper<BlogDO> eq = Wrappers.<BlogDO>lambdaQuery().eq(BlogDO::getUserId, StpUtil.getLoginIdAsLong());
+//        Page<BlogDO> blogDOPage = this.baseMapper.selectPage(new Page<>(pageQuery.getPage(), pageQuery.getSize()), eq);
+//        return null;
+//    }
 
     public List<ArchiveResp> groupByYear(List<ArchiveResp.ArchiveItem> itemList) {
         // 1. 按年份分组，Map<String, List<ArchiveItem>>

@@ -20,6 +20,7 @@ import cn.dev33.satoken.annotation.SaIgnore;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,12 +40,12 @@ import java.util.List;
 public class BlogApiController {
     private final BlogService blogService;
 
+
     @SaIgnore
     @GetMapping("/page")
     @Operation(summary = "分页查询列表", description = "分页查询列表")
     public BasePageResp<ApiBlogResp> page(BlogQuery query, PageQuery pageQuery) {
-
-        return blogService.blogPage(query, pageQuery);
+        return blogService.customPage(query, pageQuery);
     }
 
     @SaIgnore
@@ -61,15 +62,16 @@ public class BlogApiController {
         return blogService.getBlogByBlogId(blogId);
     }
 
-    @GetMapping("/my/blog")
-    @Operation(summary = "查询自己的博客", description = "查询自己的博客")
-    public BasePageResp<ApiBlogResp> myBlog(BlogQuery query, PageQuery pageQuery) {
-        return blogService.customPage(query, pageQuery);
-    }
+//    @GetMapping("/my/blog")
+//    @Operation(summary = "查询自己的博客", description = "查询自己的博客")
+//    public BasePageResp<ApiBlogResp> myBlog(@ParameterObject BlogQuery query, @ParameterObject PageQuery pageQuery) {
+//        return blogService.customPage(query, pageQuery);
+//    }
+//
+//    @GetMapping("/tag/{tagId}")
+//    @Operation(summary = "通过标签来查询博客", description = "通过标签来查询博客")
+//    public BasePageResp<ApiBlogResp> getBlogByTag(@PathVariable("tagId") Long tagId, PageQuery pageQuery) {
+//        return blogService.customPageByTagId(tagId, pageQuery);
+//    }
 
-    //    @GetMapping("/tag/{tagId}")
-    //    @Operation(summary = "通过标签来查询博客", description = "通过标签来查询博客")
-    //    public BasePageResp<ApiBlogResp> getBlogByTag(@PathVariable("tagId")Long tagId, PageQuery pageQuery) {
-    //
-    //    }
 }
