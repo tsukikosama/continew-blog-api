@@ -83,6 +83,11 @@
                 <version>${revision}</version>
             </dependency>
 
+            <!-- webSocket 模块 -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-websocket</artifactId>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -99,6 +104,7 @@
             <artifactId>lombok</artifactId>
             <optional>true</optional> <!-- 表示依赖不会被传递 -->
         </dependency>
+
     </dependencies>
 
     <build>
