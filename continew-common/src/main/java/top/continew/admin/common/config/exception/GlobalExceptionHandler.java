@@ -174,6 +174,9 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(NoHandlerFoundException.class)
     public R handleNoHandlerFoundException(NoHandlerFoundException e, HttpServletRequest request) {
+        if ("POST".equalsIgnoreCase(request.getMethod()) && "/instances".equals(request.getRequestURI())) {
+            return R.ok("Ignored /instances probe.");
+        }
         log.error("[{}] {}", request.getMethod(), request.getRequestURI(), e);
         return R.fail(String.valueOf(HttpStatus.NOT_FOUND.value()), "请求 URL '%s' 不存在".formatted(request
             .getRequestURI()));
