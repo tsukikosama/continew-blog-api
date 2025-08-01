@@ -30,6 +30,7 @@ import top.continew.admin.blog.model.resp.BlogDetailResp;
 import top.continew.admin.blog.model.resp.BlogResp;
 import top.continew.admin.blog.service.BlogService;
 import top.continew.starter.extension.crud.model.query.PageQuery;
+import top.continew.starter.extension.crud.model.req.IdsReq;
 import top.continew.starter.extension.crud.model.resp.BasePageResp;
 
 /**
@@ -45,5 +46,10 @@ public class BlogController extends BaseController<BlogService, BlogResp, BlogDe
     @Override
     public BasePageResp<BlogResp> page(BlogQuery query, PageQuery pageQuery) {
         return super.page(query, pageQuery);
+    }
+
+    @Override
+    public void delete(IdsReq req) {
+        super.delete(req);
     }
 }

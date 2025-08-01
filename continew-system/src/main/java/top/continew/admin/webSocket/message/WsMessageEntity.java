@@ -14,6 +14,9 @@ public class WsMessageEntity {
     @Schema(description = "发送范围")
     private MessageScopeEnum scope;
 
+    @Schema(description = "连接池名字")
+    private String key;
+
     @Schema(description = "消息内容")
     private String content;
 
