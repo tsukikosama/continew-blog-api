@@ -430,7 +430,7 @@ CREATE TABLE `cc_angry_pig`
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
   CHARACTER SET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci
+  COLLATE = utf8mb4_general_ci
   ROW_FORMAT = Dynamic;
 
 DROP TABLE IF EXISTS `cc_blog`;
@@ -467,7 +467,7 @@ CREATE TABLE `cc_blog_like`
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 2
   CHARACTER SET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci
+  COLLATE = utf8mb4_general_ci
   ROW_FORMAT = Dynamic;
 
 DROP TABLE IF EXISTS `cc_blog_type`;
@@ -483,7 +483,7 @@ CREATE TABLE `cc_blog_type`
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
   CHARACTER SET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci
+  COLLATE = utf8mb4_general_ci
   ROW_FORMAT = Dynamic;
 
 DROP TABLE IF EXISTS `cc_feedback`;
@@ -537,7 +537,7 @@ CREATE TABLE `cc_life_note`
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
   CHARACTER SET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci
+  COLLATE = utf8mb4_general_ci
   ROW_FORMAT = Dynamic;
 
 DROP TABLE IF EXISTS `cc_module`;
