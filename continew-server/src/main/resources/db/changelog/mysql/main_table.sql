@@ -656,3 +656,8 @@ CREATE TABLE `ccblog`.`cc_review_like`
     `create_time` datetime NOT NULL COMMENT '点赞时间',
     PRIMARY KEY (`id`)
 );
+-- changeset weilai:11
+-- comment 新增标签展示图
+ALTER TABLE `ccblog`.`cc_tag`
+    ADD COLUMN `img_url` varchar(255) NULL COMMENT '标签的展示图' AFTER `update_user`;
+

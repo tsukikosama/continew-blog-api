@@ -48,4 +48,7 @@ public class TagResp extends BaseResp {
      */
     @Schema(description = "修改时间")
     private LocalDateTime updateTime;
+
+    @Schema(description = "图标路径")
+    private String imgUrl;
 }

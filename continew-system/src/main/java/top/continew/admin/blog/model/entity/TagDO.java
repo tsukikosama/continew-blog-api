@@ -43,4 +43,6 @@ public class TagDO extends BaseDO {
      * 标签名称
      */
     private String name;
+
+    private String imgUrl;
 }

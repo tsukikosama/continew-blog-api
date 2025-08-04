@@ -47,4 +47,7 @@ public class TagDetailResp extends BaseDetailResp {
     @Schema(description = "标签名称")
     @ExcelProperty(value = "标签名称")
     private String name;
+
+    @Schema(description = "图标路径")
+    private String imgUrl;
 }
