@@ -643,12 +643,12 @@ ALTER TABLE cc_blog
 -- changeset weilai:9
 -- comment 修改评论默认值
 
-ALTER TABLE `ccblog`.`cc_review`
+ALTER TABLE `cc_review`
     MODIFY COLUMN `likes` int NULL DEFAULT 0 COMMENT '点赞数' AFTER `content`;
 
 -- changeset weilai:10
 -- comment 新增评论点赞表
-CREATE TABLE `ccblog`.`cc_review_like`
+CREATE TABLE `cc_review_like`
 (
     `id`          bigint   NOT NULL,
     `user_id`     bigint   NOT NULL COMMENT '用户id',
@@ -658,6 +658,6 @@ CREATE TABLE `ccblog`.`cc_review_like`
 );
 -- changeset weilai:11
 -- comment 新增标签展示图
-ALTER TABLE `ccblog`.`cc_tag`
+ALTER TABLE `cc_tag`
     ADD COLUMN `img_url` varchar(255) NULL COMMENT '标签的展示图' AFTER `update_user`;
 
