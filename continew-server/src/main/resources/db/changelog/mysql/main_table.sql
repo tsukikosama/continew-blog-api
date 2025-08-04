@@ -421,7 +421,7 @@ CREATE TABLE `cc_angry_pig`
 (
     `id`          bigint                                                NOT NULL AUTO_INCREMENT COMMENT '主键',
     `user_id`     bigint                                                NOT NULL COMMENT '用户id',
-    `cause`       text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '原因',
+    `cause`       text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '原因',
     `create_time` datetime                                              NOT NULL COMMENT '创建时间',
     `update_user` datetime                                              NULL DEFAULT NULL COMMENT '更新人',
     `create_user` bigint                                                NOT NULL COMMENT '创建人',
@@ -525,11 +525,11 @@ DROP TABLE IF EXISTS `cc_life_note`;
 CREATE TABLE `cc_life_note`
 (
     `id`          bigint                                                        NOT NULL COMMENT '主键',
-    `origin_url`  varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '原图地址',
-    `web_url`     varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '网页压缩图地址',
+    `origin_url`  varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '原图地址',
+    `web_url`     varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '网页压缩图地址',
     `user_id`     bigint                                                        NOT NULL COMMENT '发布者id',
-    `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '描述',
-    `title`       varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '标题',
+    `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
+    `title`       varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '标题',
     `create_time` datetime                                                      NOT NULL COMMENT '创建时间',
     `create_user` bigint                                                        NOT NULL COMMENT '创建人',
     `update_user` bigint                                                        NULL DEFAULT NULL COMMENT '更新人',
@@ -631,7 +631,7 @@ ALTER TABLE `cc_customer`
 -- changeset weilai:7
 -- comment 新增邮箱非必输
 ALTER TABLE `cc_customer`
-    MODIFY COLUMN `email` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '邮箱' AFTER `password`;
+    MODIFY COLUMN `email` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '邮箱' AFTER `password`;
 -- changeset weilai:8
 -- comment 修改数据库字符集
 ALTER DATABASE ccblog CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
