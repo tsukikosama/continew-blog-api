@@ -108,7 +108,8 @@ continew-starter.web.cors:
   enabled: true
   # 配置允许跨域的域名
   allowed-origins:
-    - ${project.url}
+    - http://8.138.16.124:10001
+    - http://8.138.16.124:10002
   # 配置允许跨域的请求方式
   allowed-methods: '*'
   # 配置允许跨域的请求头
@@ -215,7 +216,8 @@ continew-starter.messaging.websocket:
   path: /websocket
   # 配置允许跨域的域名
   allowed-origins:
-    - ${project.url}
+    - http://8.138.16.124:10001
+    - http://8.138.16.124:10002
 
 --- ### Sa-Token 扩展配置
 sa-token.extension:
