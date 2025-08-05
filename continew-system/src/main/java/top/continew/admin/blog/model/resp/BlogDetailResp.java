@@ -26,6 +26,7 @@ import com.alibaba.excel.annotation.ExcelProperty;
 import top.continew.admin.common.model.resp.BaseDetailResp;
 import java.io.Serial;
 import java.time.*;
+import java.util.List;
 
 /**
  * 博客 详情信息
@@ -88,5 +89,8 @@ public class BlogDetailResp extends BaseDetailResp {
      */
     @Schema(description = "0保存 1发布")
     @ExcelProperty(value = "0保存 1发布")
-    private Integer status;
+    private String status;
+
+    @Schema(description = "博客标签")
+    private List<Long> tagId;
 }
