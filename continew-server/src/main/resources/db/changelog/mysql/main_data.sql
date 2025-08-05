@@ -329,3 +329,12 @@ INSERT INTO `sys_menu` (`id`, `title`, `parent_id`, `type`, `path`, `name`, `com
 ALTER TABLE `cc_friendlink`
     MODIFY COLUMN `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键' FIRST,
     MODIFY COLUMN `web_access` int NOT NULL COMMENT '0为为审核通过 1为审核通过 2为审核失败' AFTER `web_img`;
+-- changeset weilai:4
+-- comment 新增字典
+INSERT INTO `sys_dict` (`id`, `name`, `code`, `description`, `is_system`, `create_user`, `create_time`, `update_user`, `update_time`) VALUES (732993509300109338, '博客状态', 'blog_status', NULL, b'0', 1, '2025-07-08 16:14:31', NULL, NULL);
+INSERT INTO `sys_dict` (`id`, `name`, `code`, `description`, `is_system`, `create_user`, `create_time`, `update_user`, `update_time`) VALUES (733290030809743383, '友链审核状态', 'friend_link_access_status', '友链审核状态', b'0', 1, '2025-07-09 11:52:47', NULL, NULL);
+INSERT INTO `sys_dict_item` (`id`, `label`, `value`, `color`, `sort`, `description`, `status`, `dict_id`, `create_user`, `create_time`, `update_user`, `update_time`) VALUES (732993585741299742, '保存', '0', 'primary', 1, '保存', 1, 732993509300109338, 1, '2025-07-08 16:14:49', NULL, NULL);
+INSERT INTO `sys_dict_item` (`id`, `label`, `value`, `color`, `sort`, `description`, `status`, `dict_id`, `create_user`, `create_time`, `update_user`, `update_time`) VALUES (732993630918148129, '发布', '1', 'success', 999, '发布', 1, 732993509300109338, 1, '2025-07-08 16:15:00', NULL, NULL);
+INSERT INTO `sys_dict_item` (`id`, `label`, `value`, `color`, `sort`, `description`, `status`, `dict_id`, `create_user`, `create_time`, `update_user`, `update_time`) VALUES (733290228252409884, '审核中', '0', 'primary', 1, '审核中', 1, 733290030809743383, 1, '2025-07-09 11:53:34', NULL, NULL);
+INSERT INTO `sys_dict_item` (`id`, `label`, `value`, `color`, `sort`, `description`, `status`, `dict_id`, `create_user`, `create_time`, `update_user`, `update_time`) VALUES (733290295038312479, '审核通过', '1', 'success', 1, '审核通过', 1, 733290030809743383, 1, '2025-07-09 11:53:50', NULL, NULL);
+INSERT INTO `sys_dict_item` (`id`, `label`, `value`, `color`, `sort`, `description`, `status`, `dict_id`, `create_user`, `create_time`, `update_user`, `update_time`) VALUES (733290332220817442, '未通过', '2', 'error', 2, '2', 1, 733290030809743383, 1, '2025-07-09 11:53:59', NULL, NULL);
