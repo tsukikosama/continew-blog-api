@@ -53,11 +53,8 @@ public class BlogController extends BaseController<BlogService, BlogResp, BlogDe
     private final BlogTypeService blogTypeService;
     @Override
     public BasePageResp<BlogResp> page(BlogQuery query, PageQuery pageQuery) {
-        BasePageResp<BlogResp> page = super.page(query, pageQuery);
-        page.getList().forEach(item -> {
-            List<BlogTypeDO> blogTagByBlogId = blogTypeService.getBlogTagByBlogId(item.getId());
-            item.setTagId(blogTagByBlogId.stream().map(BlogTypeDO::getTagId).toList());
-        });
+        BasePageResp<BlogResp> page = this.baseService.customPage(query, pageQuery);
+
         return page;
     }
 

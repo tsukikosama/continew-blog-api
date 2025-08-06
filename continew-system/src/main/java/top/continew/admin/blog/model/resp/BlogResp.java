@@ -95,5 +95,7 @@ public class BlogResp extends BaseResp {
     @Schema(description = "博客标签")
     private List<Long> tagId;
 
+    @Schema(description = "用户名")
+    private String nickname;
 
 }

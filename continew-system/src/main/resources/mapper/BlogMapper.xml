@@ -37,4 +37,24 @@
         GROUP BY cb.id
 
     </select>
+    <select id="customPage" resultType="top.continew.admin.blog.model.resp.BlogResp">
+        SELECT
+            cb.id,
+            cb.title,
+            cb.simple_title,
+            cb.picture,
+            cb.content,
+            cb.visit,
+            cc.id as userId,
+            cc.nickname,
+            cb.create_time,
+            cb.status,
+            cb.update_time
+        FROM cc_blog cb
+                 LEFT JOIN cc_blog_type cbt ON cb.id = cbt.blog_id
+                 LEFT JOIN cc_customer cc ON cc.id = cb.user_id
+            ${ew.customSqlSegment}
+        GROUP BY cb.id
+        ORDER BY cb.create_time DESC
+    </select>
 </mapper>

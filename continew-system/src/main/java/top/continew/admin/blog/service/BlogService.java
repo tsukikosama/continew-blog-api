@@ -33,7 +33,7 @@ import java.util.List;
  */
 public interface BlogService extends BaseService<BlogResp, BlogDetailResp, BlogQuery, BlogReq> {
 
-    BasePageResp<ApiBlogResp> customPage(BlogQuery query, PageQuery pageQuery);
+    BasePageResp<ApiBlogResp> customPageApi(BlogQuery query, PageQuery pageQuery);
 
     ApiCustomerResp getUserBlogDateById(long loginIdAsLong);
 
@@ -42,6 +42,9 @@ public interface BlogService extends BaseService<BlogResp, BlogDetailResp, BlogQ
     ApiBlogResp getBlogByBlogId(Long blogId);
 
     List<ArchiveResp> getArchive(long loginIdAsLong);
+
+    BasePageResp<BlogResp> customPage(BlogQuery query, PageQuery pageQuery);
+
 
 //    BasePageResp<ApiBlogResp> customPage(BlogQuery query, PageQuery pageQuery);
 //

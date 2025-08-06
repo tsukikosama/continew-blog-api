@@ -25,6 +25,7 @@ import top.continew.starter.data.core.enums.QueryType;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.*;
+import java.util.List;
 
 /**
  * 博客 查询条件
@@ -43,43 +44,26 @@ public class BlogQuery implements Serializable {
      * 标题
      */
     @Schema(description = "标题")
-    @Query(type = QueryType.LIKE)
     private String title;
 
-    /**
-     * 简化标题
-     */
-    @Schema(description = "简化标题")
-    @Query(type = QueryType.LIKE)
-    private String simpleTitle;
 
     /**
      * 0保存 1发布
      */
     @Schema(description = "0保存 1发布")
-    @Query(type = QueryType.EQ)
     private Integer status;
 
     /**
      * 创建时间
      */
     @Schema(description = "创建时间")
-    @Query(type = QueryType.BETWEEN)
-    private LocalDateTime[] createTime;
+    private List<LocalDateTime> createTime;
 
-    /**
-     * 创建人
-     */
-    @Schema(description = "创建人")
-    @Query(type = QueryType.EQ)
-    private Long createUser;
 
     @Schema(description = "创建用户")
-    @Query(type = QueryType.EQ)
     private Long userId;
 
 
     @Schema(description = "标签id")
-    @Query(type = QueryType.EQ)
     private Long tagId;
 }

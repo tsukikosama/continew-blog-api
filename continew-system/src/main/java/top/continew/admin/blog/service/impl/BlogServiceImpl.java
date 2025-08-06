@@ -18,6 +18,7 @@ package top.continew.admin.blog.service.impl;
 
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -81,7 +82,7 @@ public class BlogServiceImpl extends BaseServiceImpl<BlogMapper, BlogDO, BlogRes
     }
 
     @Override
-    public BasePageResp<ApiBlogResp> customPage(BlogQuery query, PageQuery pageQuery) {
+    public BasePageResp<ApiBlogResp> customPageApi(BlogQuery query, PageQuery pageQuery) {
         QueryWrapper<BlogDO> queryWrapper = this.buildQueryWrapper(query);
         IPage<ApiBlogResp> page = this.baseMapper.selectBlogPage(new Page((long)pageQuery.getPage(), (long)pageQuery
             .getSize()), queryWrapper);
@@ -117,6 +118,32 @@ public class BlogServiceImpl extends BaseServiceImpl<BlogMapper, BlogDO, BlogRes
         List<ArchiveResp.ArchiveItem> itemList = BeanUtil.copyToList(blogDOS, ArchiveResp.ArchiveItem.class);
         List<ArchiveResp> archiveResps = groupByYear(itemList);
         return archiveResps;
+    }
+
+    /**
+     * 后台的博客分页
+     * @param query
+     * @param pageQuery
+     * @return
+     */
+    @Override
+    public BasePageResp<BlogResp> customPage(BlogQuery query, PageQuery pageQuery) {
+        QueryWrapper<BlogDO> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq(query.getUserId() != null,"cb.user_id",query.getUserId());
+        queryWrapper.eq(query.getTitle() != null,"cb.title",query.getTitle());
+        queryWrapper.eq(query.getStatus() != null,"cb.status",query.getStatus());
+        queryWrapper.eq(query.getTagId() != null,"cbt.tag_id",query.getTagId());
+        // between 会先获取数值 不能像其他的一样的那样写
+        if (ObjectUtil.isNotNull(query.getCreateTime())){
+            queryWrapper.between( "cb.create_time", query.getCreateTime().get(0),query.getCreateTime().get(1));
+        }
+           IPage<BlogResp> page = this.baseMapper.customPage(new Page<>(pageQuery.getPage(),pageQuery.getSize()),queryWrapper);
+        page.getRecords().forEach(item -> {
+            List<BlogTypeDO> list = blogTypeService.getBlogTagByBlogId(item.getId());
+            List<Long> collect = list.stream().map(BlogTypeDO::getTagId).collect(Collectors.toList());
+            item.setTagId(collect);
+        });
+        return PageResp.build(page, BlogResp.class);
     }
 
 //    /**
