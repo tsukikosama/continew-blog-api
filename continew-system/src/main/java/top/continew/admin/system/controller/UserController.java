@@ -29,6 +29,7 @@ import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import top.continew.admin.blog.service.CustomerService;
 import top.continew.admin.common.constant.RegexConstants;
 import top.continew.admin.common.controller.BaseController;
 import top.continew.admin.common.util.SecureUtils;
@@ -65,6 +66,8 @@ import java.io.IOException;
     Api.EXPORT})
 public class UserController extends BaseController<UserService, UserResp, UserDetailResp, UserQuery, UserReq> {
 
+    private final CustomerService customerService;
+
     @Override
     @Operation(summary = "新增数据", description = "新增数据")
     public IdResp<Long> create(@Validated(CrudValidationGroup.Create.class) @RequestBody UserReq req) {
@@ -73,6 +76,9 @@ public class UserController extends BaseController<UserService, UserResp, UserDe
         ValidationUtils.throwIf(!ReUtil
             .isMatch(RegexConstants.PASSWORD, rawPassword), "密码长度为 8-32 个字符，支持大小写字母、数字、特殊字符，至少包含字母和数字");
         req.setPassword(rawPassword);
+        //直接添加客户
+        //存入客户表中 这样可以同步一个用户端的用户 给后台
+        customerService.createCustomerById(req);
         return super.create(req);
     }
 

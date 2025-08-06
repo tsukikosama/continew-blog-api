@@ -21,11 +21,14 @@ import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.crypto.SecureUtil;
+import cn.hutool.extra.spring.SpringUtil;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.RequiredArgsConstructor;
 
+import net.dreamlu.mica.core.spring.SpringContextUtil;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import top.continew.admin.blog.model.req.ApiCustomerUpdatePswdReq;
@@ -33,8 +36,12 @@ import top.continew.admin.blog.model.req.ApiCustomerUpdateReq;
 import top.continew.admin.blog.model.req.CustomerLoginReq;
 import top.continew.admin.common.context.RoleContext;
 import top.continew.admin.common.context.UserContext;
+import top.continew.admin.common.util.SecureUtils;
+import top.continew.admin.system.model.entity.user.UserDO;
+import top.continew.admin.system.model.req.user.UserReq;
 import top.continew.admin.system.model.resp.ClientResp;
 import top.continew.admin.system.service.ClientService;
+import top.continew.admin.system.service.UserService;
 import top.continew.starter.core.validation.CheckUtils;
 import top.continew.starter.extension.crud.service.BaseServiceImpl;
 import top.continew.admin.blog.mapper.CustomerMapper;
@@ -60,6 +67,7 @@ import static top.continew.admin.common.enums.DataScopeEnum.ALL;
 public class CustomerServiceImpl extends BaseServiceImpl<CustomerMapper, CustomerDO, CustomerResp, CustomerDetailResp, CustomerQuery, CustomerReq> implements CustomerService {
 
     private final ClientService clientService;
+
 
     @Override
     public Void register(CustomerReq req) {
@@ -151,6 +159,15 @@ public class CustomerServiceImpl extends BaseServiceImpl<CustomerMapper, Custome
         wrapper.set(CustomerDO::getPassword, SecureUtil.md5(req.getNewPswd()));
         wrapper.eq(CustomerDO::getId, customerDO.getId());
         this.baseMapper.update(null, wrapper);
+    }
+
+    @Override
+    public void createCustomerById(UserReq req) {
+        CustomerDO customerDO = new CustomerDO();
+        BeanUtil.copyProperties(req,customerDO);
+        customerDO.setPassword(SecureUtil.md5(req.getPassword()));
+        this.baseMapper.insert(customerDO);
+
     }
 
 }

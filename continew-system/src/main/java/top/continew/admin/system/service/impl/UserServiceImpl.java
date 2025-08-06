@@ -55,6 +55,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import top.continew.admin.auth.service.OnlineUserService;
+import top.continew.admin.blog.model.req.CustomerReq;
+import top.continew.admin.blog.service.CustomerService;
 import top.continew.admin.common.constant.CacheConstants;
 import top.continew.admin.common.constant.SysConstants;
 import top.continew.admin.common.context.UserContext;
@@ -134,6 +136,12 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, UserDO, UserRes
         PageResp<UserResp> pageResp = PageResp.build(page, super.getListClass());
         pageResp.getList().forEach(this::fill);
         return pageResp;
+    }
+
+    @Override
+    public Long create(UserReq req) {
+        Long l = super.create(req);
+        return l;
     }
 
     @Override

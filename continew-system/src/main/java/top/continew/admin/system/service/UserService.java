@@ -55,6 +55,9 @@ public interface UserService extends BaseService<UserResp, UserDetailResp, UserQ
      */
     UserImportParseResp parseImport(MultipartFile file);
 
+    @Override
+    Long create(UserReq req);
+
     /**
      * 导入数据
      *

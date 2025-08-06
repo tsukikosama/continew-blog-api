@@ -19,6 +19,7 @@ package top.continew.admin.blog.service;
 import top.continew.admin.blog.model.req.ApiCustomerUpdatePswdReq;
 import top.continew.admin.blog.model.req.ApiCustomerUpdateReq;
 import top.continew.admin.blog.model.req.CustomerLoginReq;
+import top.continew.admin.system.model.req.user.UserReq;
 import top.continew.starter.extension.crud.service.BaseService;
 import top.continew.admin.blog.model.query.CustomerQuery;
 import top.continew.admin.blog.model.req.CustomerReq;
@@ -40,4 +41,5 @@ public interface CustomerService extends BaseService<CustomerResp, CustomerDetai
 
     void updateCustomerPswd(ApiCustomerUpdatePswdReq req);
 
+    void createCustomerById(UserReq req);
 }
