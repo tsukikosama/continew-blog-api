@@ -24,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import top.continew.admin.blog.model.req.ApiReviewReq;
+import top.continew.admin.blog.model.resp.ApiNearlyReviewResp;
 import top.continew.starter.extension.crud.service.BaseServiceImpl;
 import top.continew.admin.blog.mapper.ReviewMapper;
 import top.continew.admin.blog.model.entity.ReviewDO;
@@ -57,5 +58,11 @@ public class ReviewServiceImpl extends BaseServiceImpl<ReviewMapper, ReviewDO, R
             .eq(ReviewDO::getReplyId, id));
 
         return list;
+    }
+
+    @Override
+    public List<ApiNearlyReviewResp> nearly() {
+        List<ApiNearlyReviewResp> reviewDOS = this.baseMapper.selectNearlyReview();
+        return reviewDOS;
     }
 }

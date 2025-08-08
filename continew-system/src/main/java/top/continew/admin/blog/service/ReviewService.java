@@ -17,6 +17,7 @@
 package top.continew.admin.blog.service;
 
 import top.continew.admin.blog.model.req.ApiReviewReq;
+import top.continew.admin.blog.model.resp.ApiNearlyReviewResp;
 import top.continew.starter.extension.crud.service.BaseService;
 import top.continew.admin.blog.model.query.ReviewQuery;
 import top.continew.admin.blog.model.req.ReviewReq;
@@ -35,4 +36,7 @@ public interface ReviewService extends BaseService<ReviewResp, ReviewDetailResp,
     void review(ApiReviewReq req);
 
     List<ReviewResp> getChildReview(Long id);
+
+    List<ApiNearlyReviewResp> nearly();
+
 }

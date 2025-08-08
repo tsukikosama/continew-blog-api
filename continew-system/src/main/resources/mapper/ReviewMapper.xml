@@ -7,4 +7,9 @@
                  left join cc_customer cc on cr.user_id = cc.id
             ${ew.customSqlSegment}
     </select>
+    <select id="selectNearlyReview" resultType="top.continew.admin.blog.model.resp.ApiNearlyReviewResp">
+        select cr.content,cr.create_time,cc.nickname,cc.avatar from cc_review cr
+            left join cc_customer cc on cr.user_id = cc.id
+        order by cr.create_time desc limit 5
+    </select>
 </mapper>

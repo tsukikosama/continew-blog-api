@@ -20,12 +20,14 @@ import cn.dev33.satoken.annotation.SaIgnore;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import top.continew.admin.blog.model.query.ReviewQuery;
 import top.continew.admin.blog.model.req.ApiReviewReq;
 import top.continew.admin.blog.model.req.ReviewReq;
+import top.continew.admin.blog.model.resp.ApiNearlyReviewResp;
 import top.continew.admin.blog.model.resp.ReviewDetailResp;
 import top.continew.admin.blog.model.resp.ReviewResp;
 import top.continew.admin.blog.service.CustomerService;
@@ -69,5 +71,11 @@ public class ReviewApiController extends BaseController<ReviewService, ReviewRes
     @Operation(summary = "评论", description = "评论")
     public void review(@RequestBody ApiReviewReq req) {
         this.baseService.review(req);
+    }
+
+    @GetMapping("/nearly")
+    @Operation(summary = "最近评论", description = "最近评论")
+    public List<ApiNearlyReviewResp> nearly() {
+        return this.baseService.nearly();
     }
 }
