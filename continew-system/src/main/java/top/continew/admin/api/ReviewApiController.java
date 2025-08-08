@@ -73,6 +73,7 @@ public class ReviewApiController extends BaseController<ReviewService, ReviewRes
         this.baseService.review(req);
     }
 
+    @SaIgnore
     @GetMapping("/nearly")
     @Operation(summary = "最近评论", description = "最近评论")
     public List<ApiNearlyReviewResp> nearly() {
