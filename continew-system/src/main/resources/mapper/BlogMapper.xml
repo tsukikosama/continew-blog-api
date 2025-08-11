@@ -28,7 +28,7 @@
         limit 5
     </select>
     <select id="getBlogByBlogId" resultType="top.continew.admin.blog.model.resp.ApiBlogResp">
-        select cb.*, count(cr.id) as reviewNum, count(cbl.id) as likeNumber, cc.id as cusomerId, cc.nickname as userName
+        select cb.*, count(cr.id) as reviews, count(cbl.id) as likes, cc.id as customerId, cc.nickname as username
         from cc_blog cb
                  left join cc_review cr on cb.id = cr.blog_id
                  left join cc_blog_like cbl on cb.id = cbl.blog_id

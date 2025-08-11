@@ -19,6 +19,7 @@ package top.continew.admin.blog.service;
 import top.continew.admin.blog.model.resp.*;
 import top.continew.starter.extension.crud.model.query.PageQuery;
 import top.continew.starter.extension.crud.model.resp.BasePageResp;
+import top.continew.starter.extension.crud.model.resp.PageResp;
 import top.continew.starter.extension.crud.service.BaseService;
 import top.continew.admin.blog.model.query.BlogQuery;
 import top.continew.admin.blog.model.req.BlogReq;
@@ -43,7 +44,7 @@ public interface BlogService extends BaseService<BlogResp, BlogDetailResp, BlogQ
 
     List<ArchiveResp> getArchive(long loginIdAsLong);
 
-    BasePageResp<BlogResp> customPage(BlogQuery query, PageQuery pageQuery);
+    PageResp<BlogResp> customPage(BlogQuery query, PageQuery pageQuery);
 
 
 //    BasePageResp<ApiBlogResp> customPage(BlogQuery query, PageQuery pageQuery);

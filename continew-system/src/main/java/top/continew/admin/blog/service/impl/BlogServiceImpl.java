@@ -89,7 +89,7 @@ public class BlogServiceImpl extends BaseServiceImpl<BlogMapper, BlogDO, BlogRes
         PageResp<ApiBlogResp> pageResp = PageResp.build(page, ApiBlogResp.class);
         pageResp.getList().forEach(item -> {
             List<BlogTypeDO> list = blogTypeService.getBlogTagByBlogId(item.getId());
-            item.setTagList(BeanUtil.copyToList(list, TagDO.class));
+            item.setTags(BeanUtil.copyToList(list, TagDO.class));
         });
         return pageResp;
     }
@@ -127,7 +127,7 @@ public class BlogServiceImpl extends BaseServiceImpl<BlogMapper, BlogDO, BlogRes
      * @return
      */
     @Override
-    public BasePageResp<BlogResp> customPage(BlogQuery query, PageQuery pageQuery) {
+    public PageResp<BlogResp> customPage(BlogQuery query, PageQuery pageQuery) {
         QueryWrapper<BlogDO> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq(query.getUserId() != null,"cb.user_id",query.getUserId());
         queryWrapper.eq(query.getTitle() != null,"cb.title",query.getTitle());

@@ -32,10 +32,10 @@ public class ApiBlogResp {
     private String content;
     private Integer visit;
     private String simpleTitle;
-    private String userId;
-    private String userName;
-    private List<TagDO> tagList;
-    private Integer reviewNum;
-    private Integer likeNumber;
+    private String customerId;
+    private String username;
+    private List<TagDO> tags;
+    private Integer reviews;
+    private Integer likes;
     private LocalDateTime createTime;
 }

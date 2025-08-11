@@ -35,6 +35,7 @@ import top.continew.admin.blog.service.BlogService;
 import top.continew.starter.extension.crud.model.query.PageQuery;
 import top.continew.starter.extension.crud.model.req.IdsReq;
 import top.continew.starter.extension.crud.model.resp.BasePageResp;
+import top.continew.starter.extension.crud.model.resp.PageResp;
 
 import java.util.List;
 
@@ -52,8 +53,8 @@ public class BlogController extends BaseController<BlogService, BlogResp, BlogDe
 
     private final BlogTypeService blogTypeService;
     @Override
-    public BasePageResp<BlogResp> page(BlogQuery query, PageQuery pageQuery) {
-        BasePageResp<BlogResp> page = this.baseService.customPage(query, pageQuery);
+    public PageResp<BlogResp> page(BlogQuery query, PageQuery pageQuery) {
+        PageResp<BlogResp> page = this.baseService.customPage(query, pageQuery);
 
         return page;
     }

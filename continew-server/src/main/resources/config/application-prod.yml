@@ -272,3 +272,6 @@ snail-job:
       username:  ${SCHEDULE_USERNAME:admin}
       # 密码
       password:  ${SCHEDULE_PASSWORD:admin}
+file:
+  image:
+    folder: /www/server/nginx/html/image/bg/
