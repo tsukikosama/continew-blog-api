@@ -37,25 +37,26 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/api/blog")
 @RequiredArgsConstructor
+@SaIgnore
 public class BlogApiController {
     private final BlogService blogService;
 
 
-    @SaIgnore
+
     @GetMapping("/page")
     @Operation(summary = "分页查询列表", description = "分页查询列表")
     public BasePageResp<ApiBlogResp> page(BlogQuery query, PageQuery pageQuery) {
         return blogService.customPageApi(query, pageQuery);
     }
 
-    @SaIgnore
+
     @GetMapping("/recent")
     @Operation(summary = "获取最近的5条博客", description = "获取最近的5条博客")
     public List<ApiBlogResp> recentBlog() {
         return blogService.getRecentBlog();
     }
 
-    @SaIgnore
+
     @GetMapping("/{blogId}")
     @Operation(summary = "获取博客详情", description = "获取博客详情")
     public ApiBlogResp detail(@PathVariable("blogId") Long blogId) {

@@ -50,6 +50,7 @@ import java.util.List;
 @RestController
 @CrudRequestMapping(value = "/api/review", api = {Api.PAGE, Api.GET, Api.CREATE, Api.UPDATE, Api.DELETE, Api.EXPORT})
 @RequiredArgsConstructor
+
 public class ReviewApiController extends BaseController<ReviewService, ReviewResp, ReviewDetailResp, ReviewQuery, ReviewReq> {
 
     private final CustomerService customerService;
