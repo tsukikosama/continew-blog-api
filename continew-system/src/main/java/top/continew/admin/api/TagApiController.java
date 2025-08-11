@@ -16,6 +16,7 @@
 
 package top.continew.admin.api;
 
+import cn.dev33.satoken.annotation.SaIgnore;
 import cn.hutool.core.bean.BeanUtil;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,6 +43,7 @@ import java.util.List;
 @Tag(name = "web标签管理 API")
 @RestController
 @CrudRequestMapping(value = "/api/tag", api = {Api.PAGE, Api.GET, Api.CREATE, Api.UPDATE, Api.DELETE, Api.EXPORT})
+@SaIgnore
 public class TagApiController extends BaseController<TagService, TagResp, TagDetailResp, TagQuery, TagReq> {
     @GetMapping("/list")
     public List<ApiTagResp> list() {
