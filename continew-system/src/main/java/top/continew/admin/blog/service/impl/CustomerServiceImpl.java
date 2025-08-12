@@ -18,6 +18,7 @@ package top.continew.admin.blog.service.impl;
 
 import cn.dev33.satoken.stp.SaLoginModel;
 import cn.dev33.satoken.stp.StpUtil;
+import cn.dev33.satoken.stp.parameter.enums.SaLogoutMode;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.crypto.SecureUtil;
@@ -36,12 +37,15 @@ import top.continew.admin.blog.model.req.ApiCustomerUpdateReq;
 import top.continew.admin.blog.model.req.CustomerLoginReq;
 import top.continew.admin.common.context.RoleContext;
 import top.continew.admin.common.context.UserContext;
+import top.continew.admin.common.context.UserContextHolder;
+import top.continew.admin.common.context.UserExtraContext;
 import top.continew.admin.common.util.SecureUtils;
 import top.continew.admin.system.model.entity.user.UserDO;
 import top.continew.admin.system.model.req.user.UserReq;
 import top.continew.admin.system.model.resp.ClientResp;
 import top.continew.admin.system.service.ClientService;
 import top.continew.admin.system.service.UserService;
+import top.continew.starter.core.util.SpringWebUtils;
 import top.continew.starter.core.validation.CheckUtils;
 import top.continew.starter.extension.crud.service.BaseServiceImpl;
 import top.continew.admin.blog.mapper.CustomerMapper;
@@ -52,6 +56,7 @@ import top.continew.admin.blog.model.resp.CustomerDetailResp;
 import top.continew.admin.blog.model.resp.CustomerResp;
 import top.continew.admin.blog.service.CustomerService;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 import static top.continew.admin.common.enums.DataScopeEnum.ALL;
@@ -99,34 +104,56 @@ public class CustomerServiceImpl extends BaseServiceImpl<CustomerMapper, Custome
         // 获取权限、角色、密码过期天数
         Long userId = customerDO.getId();
 
-        // 构建用户上下文
-        UserContext userContext = new UserContext();
-        Set<RoleContext> roles = new HashSet<>();
-        Set<String> codes = new HashSet<>();
-        codes.add("admin");
-
-        RoleContext role = new RoleContext();
-        role.setId(1L);
-        role.setCode("admin");
-        role.setDataScope(ALL);
-        roles.add(role);
-
-        userContext.setRoles(roles);
-        userContext.setRoleCodes(codes);
-        userContext.setId(customerDO.getId());
-        BeanUtil.copyProperties(customerDO, userContext);
-        userContext.setClientType(client.getClientType());
-        userContext.setClientId(client.getClientId());
-
-        // 构建 SaLoginModel
         SaLoginModel model = new SaLoginModel();
-        model.setDevice(client.getClientType());
-        model.setTimeout(client.getTimeout());
         model.setActiveTimeout(client.getActiveTimeout());
-        model.setExtra("USER", userContext); // ✅ 放进会话
+        model.setTimeout(client.getTimeout());
+        model.setDevice(client.getClientType());
+        model.setExtra("clientId", client.getClientId());
 
         // 登录
-        StpUtil.login(customerDO.getId(), model);
+        StpUtil.login(userId);
+        Map<String, Object> result = new HashMap<>();
+        result.put("satoken", "Bearer "+StpUtil.getTokenValue());
+        UserContext userContext = new UserContext();
+        userContext.setId(userId);
+        userContext.setUsername(customerDO.getUsername());
+        userContext.setClientType(client.getClientType());
+        userContext.setPasswordExpirationDays(model.getCookieTimeout());
+        userContext.setPwdResetTime(LocalDateTime.now());
+        userContext.setClientId(client.getClientId());
+        UserContextHolder.setContext(userContext);
+
+//        // 构建用户上下文
+//        UserContext userContext = new UserContext();
+//        Set<RoleContext> roles = new HashSet<>();
+//        Set<String> codes = new HashSet<>();
+//        codes.add("admin");
+//
+//        RoleContext role = new RoleContext();
+//        role.setId(1L);
+//        role.setCode("admin");
+//        role.setDataScope(ALL);
+//        roles.add(role);
+//
+//        userContext.setId(userId);
+//        userContext.setRoles(roles);
+//        userContext.setRoleCodes(codes);
+//        userContext.setId(customerDO.getId());
+//        BeanUtil.copyProperties(customerDO, userContext);
+//        userContext.setClientType(client.getClientType());
+//        userContext.setClientId(client.getClientId());
+//        userContext.setPwdResetTime(null);
+//
+//        // 构建 SaLoginModel
+//        SaLoginModel model = new SaLoginModel();
+//
+//        model.setDevice(client.getClientType());
+//        model.setTimeout(client.getTimeout());
+//        model.setActiveTimeout(client.getActiveTimeout());
+//        model.setExtra("USER", userContext); // ✅ 放进会话
+//
+//        // 登录
+//        StpUtil.login(customerDO.getId(), model);
 
         return "Bearer " + StpUtil.getTokenValue();
     }

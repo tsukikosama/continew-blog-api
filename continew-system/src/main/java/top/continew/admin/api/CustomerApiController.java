@@ -32,6 +32,8 @@ import top.continew.admin.blog.model.resp.CustomerDetailResp;
 import top.continew.admin.blog.service.BlogService;
 import top.continew.admin.blog.service.CustomerService;
 
+import javax.xml.transform.Result;
+
 @Tag(name = "用户API")
 @RestController
 @RequestMapping(value = "/api/customer")
@@ -69,16 +71,14 @@ public class CustomerApiController {
 
     @PutMapping("/update")
     @Operation(summary = "更新用户信息", description = "更新用户信息")
-    public Void update(@RequestBody ApiCustomerUpdateReq req) {
+    public void update(@RequestBody ApiCustomerUpdateReq req) {
         customerService.updateCustomer(req);
-        return null;
     }
 
     @PutMapping("/updatePswd")
     @Operation(summary = "更新用户密码", description = "更新用户密码")
-    public Void updatePswd(@RequestBody ApiCustomerUpdatePswdReq req) {
+    public void updatePswd(@RequestBody ApiCustomerUpdatePswdReq req) {
         customerService.updateCustomerPswd(req);
-        return null;
     }
 
 }
