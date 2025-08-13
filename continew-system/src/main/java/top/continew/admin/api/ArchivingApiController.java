@@ -16,6 +16,7 @@
 
 package top.continew.admin.api;
 
+import cn.dev33.satoken.annotation.SaIgnore;
 import cn.dev33.satoken.stp.StpUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -32,13 +33,15 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/api/archive")
 @RequiredArgsConstructor
+@SaIgnore
 public class ArchivingApiController {
 
     private final BlogService blogService;
 
+
     @GetMapping("/list")
     @Operation(summary = "归档", description = "归档")
     public List<ArchiveResp> getArchive() {
-        return this.blogService.getArchive(StpUtil.getLoginIdAsLong());
+        return this.blogService.getArchive();
     }
 }

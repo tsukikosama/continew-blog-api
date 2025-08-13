@@ -44,6 +44,7 @@ public class BlogQuery implements Serializable {
      * 标题
      */
     @Schema(description = "标题")
+    @Query(type = QueryType.LIKE)
     private String title;
 
 
@@ -66,4 +67,5 @@ public class BlogQuery implements Serializable {
 
     @Schema(description = "标签id")
     private Long tagId;
+
 }

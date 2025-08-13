@@ -7,6 +7,7 @@
             left join cc_blog_like cbl on cb.id = cbl.blog_id
             left join cc_customer cc on cb.user_id = cc.id
             left join cc_blog_type cbt on cb.id = cbt.blog_id
+            ${ew.customSqlSegment}
         GROUP BY cb.id
     </select>
     <select id="getUserBlogDateById" resultType="top.continew.admin.blog.model.resp.ApiCustomerResp">

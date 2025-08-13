@@ -42,7 +42,7 @@ public interface BlogService extends BaseService<BlogResp, BlogDetailResp, BlogQ
 
     ApiBlogResp getBlogByBlogId(Long blogId);
 
-    List<ArchiveResp> getArchive(long loginIdAsLong);
+    List<ArchiveResp> getArchive();
 
     PageResp<BlogResp> customPage(BlogQuery query, PageQuery pageQuery);
 

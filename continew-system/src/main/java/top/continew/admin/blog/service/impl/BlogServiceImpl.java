@@ -19,6 +19,7 @@ package top.continew.admin.blog.service.impl;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -84,6 +85,7 @@ public class BlogServiceImpl extends BaseServiceImpl<BlogMapper, BlogDO, BlogRes
     @Override
     public BasePageResp<ApiBlogResp> customPageApi(BlogQuery query, PageQuery pageQuery) {
         QueryWrapper<BlogDO> queryWrapper = this.buildQueryWrapper(query);
+        System.out.println(queryWrapper.getTargetSql());
         IPage<ApiBlogResp> page = this.baseMapper.selectBlogPage(new Page((long)pageQuery.getPage(), (long)pageQuery
             .getSize()), queryWrapper);
         PageResp<ApiBlogResp> pageResp = PageResp.build(page, ApiBlogResp.class);
@@ -112,9 +114,8 @@ public class BlogServiceImpl extends BaseServiceImpl<BlogMapper, BlogDO, BlogRes
     }
 
     @Override
-    public List<ArchiveResp> getArchive(long loginIdAsLong) {
-        List<BlogDO> blogDOS = this.baseMapper.selectList(Wrappers.<BlogDO>lambdaQuery()
-            .eq(BlogDO::getUserId, loginIdAsLong));
+    public List<ArchiveResp> getArchive() {
+        List<BlogDO> blogDOS = this.baseMapper.selectList(Wrappers.<BlogDO>lambdaQuery());
         List<ArchiveResp.ArchiveItem> itemList = BeanUtil.copyToList(blogDOS, ArchiveResp.ArchiveItem.class);
         List<ArchiveResp> archiveResps = groupByYear(itemList);
         return archiveResps;
