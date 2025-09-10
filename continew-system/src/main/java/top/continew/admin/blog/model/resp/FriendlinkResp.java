@@ -84,4 +84,6 @@ public class FriendlinkResp extends BaseResp {
      */
     @Schema(description = "更新人")
     private Long updateUser;
+
+    private String avatar;
 }

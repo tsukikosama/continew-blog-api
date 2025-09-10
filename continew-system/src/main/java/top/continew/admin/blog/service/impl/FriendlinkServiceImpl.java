@@ -46,7 +46,7 @@ public class FriendlinkServiceImpl extends BaseServiceImpl<FriendlinkMapper, Fri
     @Override
     public Long create(FriendlinkReq req) {
         //校验网址是否可以访问
-        checkUrlAccessible(req.getWebUrl());
+        checkUrlAccessible(req.getUrl());
         return super.create(req);
     }
 

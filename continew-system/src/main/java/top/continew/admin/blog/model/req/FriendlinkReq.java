@@ -46,7 +46,7 @@ public class FriendlinkReq implements Serializable {
     @Schema(description = "网站链接")
     @NotBlank(message = "网站链接不能为空")
     @Length(max = 255, message = "网站链接长度不能超过 {max} 个字符")
-    private String webUrl;
+    private String url;
 
     /**
      * 网站名字
@@ -54,7 +54,7 @@ public class FriendlinkReq implements Serializable {
     @Schema(description = "网站名字")
     @NotBlank(message = "网站名字不能为空")
     @Length(max = 100, message = "网站名字长度不能超过 {max} 个字符")
-    private String webName;
+    private String name;
 
     /**
      * 网站图片
@@ -62,19 +62,19 @@ public class FriendlinkReq implements Serializable {
     @Schema(description = "网站图片")
     @NotBlank(message = "网站图片不能为空")
     @Length(max = 255, message = "网站图片长度不能超过 {max} 个字符")
-    private String webImg;
+    private String img;
 
     /**
      * 0为为审核通过 1为审核通过
      */
     @Schema(description = "0为为审核通过 1为审核通过")
     @NotNull(message = "0为为审核通过 1为审核通过不能为空")
-    private Integer webAccess;
+    private Integer access;
     /**
      * 网站描述
      */
     @Schema(description = "网站描述")
-    private Integer webDescript;
+    private Integer description;
     /**
      * 用户邮箱
      */
@@ -82,7 +82,7 @@ public class FriendlinkReq implements Serializable {
     @NotBlank(message = "用户邮箱不能为空")
     @Email
     @Length(max = 255, message = "用户邮箱长度不能超过 {max} 个字符")
-    private String webEmail;
+    private String email;
 
     /**
      * 创建时间
@@ -97,4 +97,8 @@ public class FriendlinkReq implements Serializable {
     @Schema(description = "创建人")
     //    @NotNull(message = "创建人不能为空")
     private Long createUser;
+
+    @Schema(description = "网站作者头像")
+    //    @NotNull(message = "创建人不能为空")
+    private Long avatar;
 }

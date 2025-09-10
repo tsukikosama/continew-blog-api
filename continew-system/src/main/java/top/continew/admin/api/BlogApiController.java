@@ -41,8 +41,6 @@ import java.util.List;
 public class BlogApiController {
     private final BlogService blogService;
 
-
-
     @GetMapping("/page")
     @Operation(summary = "分页查询列表", description = "分页查询列表")
     public BasePageResp<ApiBlogResp> page(BlogQuery query, PageQuery pageQuery) {

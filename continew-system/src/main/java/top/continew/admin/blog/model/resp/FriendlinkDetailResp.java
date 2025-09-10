@@ -89,4 +89,6 @@ public class FriendlinkDetailResp extends BaseDetailResp {
     @Schema(description = "用户邮箱")
     @ExcelProperty(value = "用户邮箱")
     private String webEmail;
+
+    private String avatar;
 }
