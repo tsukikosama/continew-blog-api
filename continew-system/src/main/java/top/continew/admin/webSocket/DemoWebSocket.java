@@ -27,10 +27,11 @@ import static io.undertow.util.URLUtils.parseQueryString;
 @Slf4j
 public class DemoWebSocket {
 
-    private static final Map<String, Map<Session, HeartConfig>> sessionPool = new ConcurrentHashMap<>();
+    private static   Map<String, Map<Session, HeartConfig>> sessionPool = new HashMap<>();
 
     // 连接与key的反向索引，用于断开连接时清理
-    private static final Map<Session, String> sessionKeyMap = new ConcurrentHashMap<>();
+    private static   Map<Session, String> sessionKeyMap = new ConcurrentHashMap<>() ;
+
     /**
      * 连接的时候触发
      * @param session
