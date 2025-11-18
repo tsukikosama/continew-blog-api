@@ -18,6 +18,7 @@ package top.continew.admin.blog.service.impl;
 
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.exceptions.CheckedUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -34,6 +35,7 @@ import top.continew.admin.blog.model.entity.BlogTypeDO;
 import top.continew.admin.blog.model.entity.TagDO;
 import top.continew.admin.blog.model.resp.*;
 import top.continew.admin.blog.service.BlogTypeService;
+import top.continew.starter.core.validation.CheckUtils;
 import top.continew.starter.extension.crud.model.query.PageQuery;
 import top.continew.starter.extension.crud.model.resp.BasePageResp;
 import top.continew.starter.extension.crud.model.resp.PageResp;
@@ -65,7 +67,7 @@ public class BlogServiceImpl extends BaseServiceImpl<BlogMapper, BlogDO, BlogRes
         PageResp<BlogResp> page = super.page(query, pageQuery);
         page.getList().forEach(item -> {
             List<BlogTypeDO> list = blogTypeService.getBlogTagByBlogId(item.getId());
-            List<Long> collect = list.stream().map(BlogTypeDO::getTagId).collect(Collectors.toList());
+            List<Long> collect = list.stream().map(BlogTypeDO::getTagId).toList();
             item.setTagId(collect);
         });
         return page;
@@ -85,7 +87,6 @@ public class BlogServiceImpl extends BaseServiceImpl<BlogMapper, BlogDO, BlogRes
     @Override
     public BasePageResp<ApiBlogResp> customPageApi(BlogQuery query, PageQuery pageQuery) {
         QueryWrapper<BlogDO> queryWrapper = this.buildQueryWrapper(query);
-        System.out.println(queryWrapper.getTargetSql());
         IPage<ApiBlogResp> page = this.baseMapper.selectBlogPage(new Page((long)pageQuery.getPage(), (long)pageQuery
             .getSize()), queryWrapper);
         PageResp<ApiBlogResp> pageResp = PageResp.build(page, ApiBlogResp.class);
@@ -98,14 +99,14 @@ public class BlogServiceImpl extends BaseServiceImpl<BlogMapper, BlogDO, BlogRes
 
     @Override
     public ApiCustomerResp getUserBlogDateById(long id) {
-
-        return this.baseMapper.getUserBlogDateById(id);
+        ApiCustomerResp userBlogDateById = this.baseMapper.getUserBlogDateById(id);
+        CheckUtils.throwIfNull(userBlogDateById, "传递id异常");
+        return userBlogDateById;
     }
 
     @Override
     public List<ApiBlogResp> getRecentBlog() {
-        List<ApiBlogResp> list = this.baseMapper.getRecentBlog();
-        return list;
+        return this.baseMapper.getRecentBlog();
     }
 
     @Override
@@ -115,10 +116,9 @@ public class BlogServiceImpl extends BaseServiceImpl<BlogMapper, BlogDO, BlogRes
 
     @Override
     public List<ArchiveResp> getArchive() {
-        List<BlogDO> blogDOS = this.baseMapper.selectList(Wrappers.<BlogDO>lambdaQuery());
-        List<ArchiveResp.ArchiveItem> itemList = BeanUtil.copyToList(blogDOS, ArchiveResp.ArchiveItem.class);
-        List<ArchiveResp> archiveResps = groupByYear(itemList);
-        return archiveResps;
+        List<BlogDO> blogDoList = this.baseMapper.selectList(Wrappers.<BlogDO>lambdaQuery());
+        List<ArchiveResp.ArchiveItem> itemList = BeanUtil.copyToList(blogDoList, ArchiveResp.ArchiveItem.class);
+        return groupByYear(itemList);
     }
 
     /**
@@ -147,25 +147,25 @@ public class BlogServiceImpl extends BaseServiceImpl<BlogMapper, BlogDO, BlogRes
         return PageResp.build(page, BlogResp.class);
     }
 
-//    /**
-//     * 查询自己的博客
-//     * @param query
-//     * @param pageQuery
-//     * @return
-//     */
-//    @Override
-//    public BasePageResp<ApiBlogResp> customPage(BlogQuery query, PageQuery pageQuery) {
-//        LambdaQueryWrapper<BlogDO> eq = Wrappers.<BlogDO>lambdaQuery().eq(BlogDO::getUserId, StpUtil.getLoginIdAsLong());
-//        Page<BlogDO> blogDOPage = this.baseMapper.selectPage(new Page<>(pageQuery.getPage(), pageQuery.getSize()), eq);
-//        return PageResp.build(blogDOPage, ApiBlogResp.class);
-//    }
+    @Override
+    public BlogDO getBlogByGoogleId(String googleDocId) {
+        List<BlogDO> blogList = this.baseMapper.selectList(Wrappers.<BlogDO>lambdaQuery()
+                .eq(BlogDO::getGoogleDocId, googleDocId));
+        if(blogList.isEmpty()){
+            return null;
+        }
+        return blogList.get(0);
+    }
 
-//    @Override
-//    public BasePageResp<ApiBlogResp> customPageByTagId(Long tagId, PageQuery pageQuery) {
-//        LambdaQueryWrapper<BlogDO> eq = Wrappers.<BlogDO>lambdaQuery().eq(BlogDO::getUserId, StpUtil.getLoginIdAsLong());
-//        Page<BlogDO> blogDOPage = this.baseMapper.selectPage(new Page<>(pageQuery.getPage(), pageQuery.getSize()), eq);
-//        return null;
-//    }
+    /**
+     * 批量保存博客
+     * @param blogList
+     */
+    @Override
+    public void batchSave(List<BlogDO> blogList) {
+        this.baseMapper.insertBatch(blogList);
+    }
+
 
     public List<ArchiveResp> groupByYear(List<ArchiveResp.ArchiveItem> itemList) {
         // 1. 按年份分组，Map<String, List<ArchiveItem>>
@@ -183,7 +183,7 @@ public class BlogServiceImpl extends BaseServiceImpl<BlogMapper, BlogDO, BlogRes
                 resp.setArchiveList(e.getValue());
                 return resp;
             })
-            .collect(Collectors.toList());
+                .toList();
 
         return result;
     }

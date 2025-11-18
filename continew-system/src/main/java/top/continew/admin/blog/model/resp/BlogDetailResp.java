@@ -93,4 +93,10 @@ public class BlogDetailResp extends BaseDetailResp {
 
     @Schema(description = "博客标签")
     private List<Long> tagId;
+
+    /**
+     * 谷歌文档id
+     */
+    @Schema(description = "谷歌文档id")
+    private String googleDocId;
 }

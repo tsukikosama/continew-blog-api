@@ -16,6 +16,7 @@
 
 package top.continew.admin.blog.service;
 
+import top.continew.admin.blog.model.entity.BlogDO;
 import top.continew.admin.blog.model.resp.*;
 import top.continew.starter.extension.crud.model.query.PageQuery;
 import top.continew.starter.extension.crud.model.resp.BasePageResp;
@@ -47,8 +48,8 @@ public interface BlogService extends BaseService<BlogResp, BlogDetailResp, BlogQ
     PageResp<BlogResp> customPage(BlogQuery query, PageQuery pageQuery);
 
 
-//    BasePageResp<ApiBlogResp> customPage(BlogQuery query, PageQuery pageQuery);
-//
-//    BasePageResp<ApiBlogResp> customPageByTagId(Long tagId, PageQuery pageQuery);
+    BlogDO getBlogByGoogleId(String googleDocId);
+
+    void batchSave(List<BlogDO> blogList);
 
 }

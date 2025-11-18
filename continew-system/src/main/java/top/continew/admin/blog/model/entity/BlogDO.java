@@ -71,4 +71,9 @@ public class BlogDO extends BaseDO {
      * 0保存 1发布
      */
     private Integer status;
+
+    /**
+     * 谷歌文档id
+     */
+    private String googleDocId;
 }

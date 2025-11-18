@@ -11,3 +11,9 @@ ALTER TABLE `ccblog`.`cc_friendlink`
     CHANGE COLUMN `web_access` `access` int NOT NULL COMMENT '0为为审核通过 1为审核通过 2为审核失败' AFTER `img`,
     CHANGE COLUMN `web_email` `email` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '用户邮箱' AFTER `access`,
     ADD COLUMN `avatar` varchar(255) NULL COMMENT '网站作者头像' AFTER `update_user`;
+
+-- changeset weilai:2
+-- comment 博客表新增 谷歌文档id字段
+ALTER TABLE `cc_blog`
+    MODIFY COLUMN `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL COMMENT '内容' AFTER `picture`,
+    ADD COLUMN `google_doc_id` varchar(50) NULL COMMENT '谷歌文档的id' AFTER `update_user`;

@@ -62,9 +62,9 @@ public class BlogTypeServiceImpl extends BaseServiceImpl<BlogTypeMapper, BlogTyp
 
     @Override
     public List<BlogTypeDO> getBlogTagByBlogId(Long id) {
-        List<BlogTypeDO> blogTypeDOS = this.baseMapper.selectList(Wrappers.<BlogTypeDO>lambdaQuery()
+        List<BlogTypeDO> blogTypeDoList = this.baseMapper.selectList(Wrappers.<BlogTypeDO>lambdaQuery()
             .eq(BlogTypeDO::getBlogId, id));
 
-        return blogTypeDOS;
+        return blogTypeDoList;
     }
 }

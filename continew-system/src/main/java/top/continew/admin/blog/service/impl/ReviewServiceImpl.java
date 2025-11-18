@@ -62,7 +62,7 @@ public class ReviewServiceImpl extends BaseServiceImpl<ReviewMapper, ReviewDO, R
 
     @Override
     public List<ApiNearlyReviewResp> nearly() {
-        List<ApiNearlyReviewResp> reviewDOS = this.baseMapper.selectNearlyReview();
-        return reviewDOS;
+        List<ApiNearlyReviewResp> reviewDOList = this.baseMapper.selectNearlyReview();
+        return reviewDOList;
     }
 }

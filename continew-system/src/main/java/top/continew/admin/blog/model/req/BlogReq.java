@@ -88,4 +88,10 @@ public class BlogReq implements Serializable {
     @Schema(description = "标签id")
     @NotNull(message = "至少要有一个标签")
     private List<Long> tagId;
+
+    /**
+     * 谷歌文档id
+     */
+    @Schema(description = "谷歌文档id")
+    private String googleDocId;
 }

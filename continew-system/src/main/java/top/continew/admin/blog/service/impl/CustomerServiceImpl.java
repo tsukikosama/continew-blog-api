@@ -123,37 +123,6 @@ public class CustomerServiceImpl extends BaseServiceImpl<CustomerMapper, Custome
         userContext.setClientId(client.getClientId());
         UserContextHolder.setContext(userContext);
 
-//        // 构建用户上下文
-//        UserContext userContext = new UserContext();
-//        Set<RoleContext> roles = new HashSet<>();
-//        Set<String> codes = new HashSet<>();
-//        codes.add("admin");
-//
-//        RoleContext role = new RoleContext();
-//        role.setId(1L);
-//        role.setCode("admin");
-//        role.setDataScope(ALL);
-//        roles.add(role);
-//
-//        userContext.setId(userId);
-//        userContext.setRoles(roles);
-//        userContext.setRoleCodes(codes);
-//        userContext.setId(customerDO.getId());
-//        BeanUtil.copyProperties(customerDO, userContext);
-//        userContext.setClientType(client.getClientType());
-//        userContext.setClientId(client.getClientId());
-//        userContext.setPwdResetTime(null);
-//
-//        // 构建 SaLoginModel
-//        SaLoginModel model = new SaLoginModel();
-//
-//        model.setDevice(client.getClientType());
-//        model.setTimeout(client.getTimeout());
-//        model.setActiveTimeout(client.getActiveTimeout());
-//        model.setExtra("USER", userContext); // ✅ 放进会话
-//
-//        // 登录
-//        StpUtil.login(customerDO.getId(), model);
 
         return "Bearer " + StpUtil.getTokenValue();
     }

@@ -98,4 +98,9 @@ public class BlogResp extends BaseResp {
     @Schema(description = "用户名")
     private String nickname;
 
+    /**
+     * 谷歌文档id
+     */
+    @Schema(description = "谷歌文档id")
+    private String googleDocId;
 }
