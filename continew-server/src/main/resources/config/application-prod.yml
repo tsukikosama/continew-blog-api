@@ -279,11 +279,11 @@ file:
 google:
   docs:
     # Service Account JSON 文件路径
-    service-account-key-path: /www/config/google/blog-md-478603-05e58f6cf82e.json
+    service-account-key-path: file:/www/config/google/blog-md-478603-05e58f6cf82e.json
     # 你的应用名称
     application-name: 小c博客
   drive:
     # Service Account JSON 文件路径
-    service-account-key-path:  /www/config/google/blog-md-478603-05e58f6cf82e.json
+    service-account-key-path:  file:/www/config/google/blog-md-478603-05e58f6cf82e.json
     # 你的应用名称
     application-name: 小c博客
